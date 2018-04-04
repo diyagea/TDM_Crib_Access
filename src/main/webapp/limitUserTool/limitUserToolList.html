@@ -1,0 +1,58 @@
+#@layout()
+#define main()
+<div class="admin-content-box">
+	<!-- 列表 -->
+	<div class="jf-admin-panel-box">
+		<div>
+			<button class="layui-btn" onclick="showFancyBox('/demo/limitUserTool/add">添加</button>
+		</div>
+		<table class="layui-table" lay-skin="line">
+		  <thead>
+		    <tr>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th>操作</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		   #for(x : page.list)
+		    <tr>
+		      	<td>#(x.ID)</td>
+		      	<td>#(x.USERCODE)</td>
+		      	<td>#(x.TOOLID)</td>
+		      	<td>#(x.TYPE)</td>
+		      	<td>#(x.STATE)</td>
+		      	<td>#(x.COUNT)</td>
+		      	<td>#(x.NOTE)</td>
+		      <td>
+					<span onclick="showFancyBox('/demo/limitUserTool/view?id=#(x.id)')">查看</span>
+					<span onclick="showFancyBox('/demo/limitUserTool/edit?id=#(x.id)')">更新</span>
+					<span onclick="showFancyBox('/demo/limitUserTool/delete?id=#(x.id)')">删除</span>
+		      </td>
+		    </tr>
+		   #end
+		  </tbody>
+		</table>
+
+		#@paginate(page.pageNumber, page.totalPage, "/demo/limitUserTool/list?p=")
+
+	</div>
+
+</div>
+#end
+
+#define css()
+
+#end
+
+#define js()
+
+	<script type="text/javascript">
+
+	</script>
+#end

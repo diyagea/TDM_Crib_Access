@@ -1,0 +1,54 @@
+#@layout()
+#define main()
+<div class="admin-content-box">
+	<!-- 列表 -->
+	<div class="jf-admin-panel-box">
+		<div>
+			<button class="layui-btn" onclick="showFancyBox('/demo/issueUser/add">添加</button>
+		</div>
+		<table class="layui-table" lay-skin="line">
+		  <thead>
+		    <tr>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th></th>
+		      <th>操作</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		   #for(x : page.list)
+		    <tr>
+		      	<td>#(x.USERCODE)</td>
+		      	<td>#(x.NAME)</td>
+		      	<td>#(x.STATE)</td>
+		      	<td>#(x.DEPT)</td>
+		      	<td>#(x.NOTE)</td>
+		      <td>
+					<span onclick="showFancyBox('/demo/issueUser/view?id=#(x.id)')">查看</span>
+					<span onclick="showFancyBox('/demo/issueUser/edit?id=#(x.id)')">更新</span>
+					<span onclick="showFancyBox('/demo/issueUser/delete?id=#(x.id)')">删除</span>
+		      </td>
+		    </tr>
+		   #end
+		  </tbody>
+		</table>
+
+		#@paginate(page.pageNumber, page.totalPage, "/demo/issueUser/list?p=")
+
+	</div>
+
+</div>
+#end
+
+#define css()
+
+#end
+
+#define js()
+
+	<script type="text/javascript">
+
+	</script>
+#end
