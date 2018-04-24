@@ -89,5 +89,9 @@ public abstract class BaseIssueRecord<M extends BaseIssueRecord<M>> extends Mode
 	public java.lang.Short getSTATE() {
 		return getShort("STATE");
 	}
+	
+	public java.lang.Short getType() {
+		return getShort("STATE");
+	}
 
 }

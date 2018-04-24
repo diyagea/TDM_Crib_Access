@@ -19,7 +19,6 @@ public class IssueTermController extends Controller {
 	
 	/**
 	 * 列表
-	 * /demo/issueTerm/list
 	 */
 	public void list() {
 		setAttr("page", srv.paginate(getParaToInt("p", 1), 40));
@@ -28,7 +27,6 @@ public class IssueTermController extends Controller {
 	
 	/**
 	 * 准备添加
-	 * /demo/issueTerm/add
 	 */
 	public void add() {
 		render("issueTermAdd.html");
@@ -36,7 +34,6 @@ public class IssueTermController extends Controller {
 	
 	/**
 	 * 保存
-	 * /demo/issueTerm/save
 	 */
 	@Before({IssueTermValidator.class})
 	public void save() {
@@ -46,17 +43,15 @@ public class IssueTermController extends Controller {
 
 	/**
 	 * 准备更新
-	 * /demo/issueTerm/edit
 	 */
 	public void edit() {
-		IssueTerm issueTerm = srv.findById(getParaToInt("id"));
+		IssueTerm issueTerm = srv.findById(getParaToInt());
 		setAttr("issueTerm", issueTerm);
 		render("issueTermEdit.html");
 	}
 
 	/**
 	 * 更新
-	 * /demo/issueTerm/update
 	 */
 	@Before(IssueTermValidator.class)
 	public void update() {
@@ -66,20 +61,18 @@ public class IssueTermController extends Controller {
 
 	/**
 	 * 查看
-	 * /demo/issueTerm/view
 	 */
 	public void view() {
-		IssueTerm issueTerm = srv.findById(getParaToInt("id"));
+		IssueTerm issueTerm = srv.findById(getParaToInt());
 		setAttr("issueTerm", issueTerm);
 		render("issueTermView.html");
 	}
 	 
 	/**
 	 * 删除
-	 * /demo/issueTerm/delete
 	 */
 	public void delete() {
-		srv.delete(getParaToInt("id"));
+		srv.delete(getParaToInt());
 		renderJson("isOk", true);
 	}
 	
