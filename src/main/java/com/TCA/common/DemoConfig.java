@@ -1,6 +1,5 @@
 package com.TCA.common;
 
-import com.TCA.blog.BlogController;
 import com.TCA.common.model._MappingKit;
 import com.TCA.controller.IssueRecordController;
 import com.TCA.controller.IssueTermController;
@@ -65,13 +64,12 @@ public class DemoConfig extends JFinalConfig {
      * 配置路由，需要手动添加Controller
      */
     public void configRoute(Routes me) {
-	me.add("/", IndexController.class, "/index");	// 第三个参数为该Controller的视图存放路径
-	me.add("/blog", BlogController.class); // 第三个参数省略时默认与第一个参数值相同，在此即为 "blog"
+	me.add("/", IndexController.class, "/");	// 第三个参数为该Controller的视图存放路径
 
 	// TDM Crib Access Controller
-	me.add("/issueRecord", IssueRecordController.class);
+	me.add("/issueRecord", IssueRecordController.class, "/page/issueRecord/");
 	me.add("/issueTerm", IssueTermController.class);
-	me.add("/issueUser", IssueUserController.class);
+	me.add("/issueUser", IssueUserController.class, "/page/issueUser/");
 	me.add("/limitDeviceTool", LimitDeviceToolController.class);
 	me.add("/limitTimeTool", LimitTimeToolController.class);
 	me.add("/limitUserTool", LimitUserToolController.class);

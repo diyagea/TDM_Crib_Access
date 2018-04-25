@@ -33,8 +33,8 @@ public class IssueRecordController extends Controller {
      * 查询列表
      */
     public void list() {
-	setAttr("page", srv.paginate(getParaToInt("p", 1), 10));
-	render("issueRecordList2.html");
+	setAttr("page", srv.paginate(getParaToInt(0, 1), 10));
+	render("issueRecordList.html");
     }
 
     public void add() {
