@@ -1,15 +1,10 @@
 package com.TCA.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.TCA.common.model.IssueRecord;
 import com.TCA.service.IssueRecordService;
 import com.TCA.validator.IssueRecordValidator;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.plugin.activerecord.Db;
-import com.jfinal.plugin.activerecord.Record;
 
 /**
  * IssueRecord 管理
@@ -18,7 +13,7 @@ import com.jfinal.plugin.activerecord.Record;
  */
 public class IssueRecordController extends Controller {
 
-    // private static final Log log = Log.getLog(IssueRecordController.class);
+    //private static final Log log = Log.getLog(IssueRecordController.class);
 
     static IssueRecordService srv = IssueRecordService.me;
 

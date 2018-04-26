@@ -7,6 +7,12 @@
 			"spread": false
 		},
 		{
+			"title": "时间限制设置",
+			"icon": "icon-text",
+			"href": "page/issueTerm/issueTermList.html",
+			"spread": false
+		},
+		{
 			"title": "其他页面",
 			"icon": "&#xe630;",
 			"href": "",

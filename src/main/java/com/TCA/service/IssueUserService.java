@@ -1,9 +1,7 @@
 package com.TCA.service;
 
-import java.util.logging.Logger;
-
 import com.TCA.common.model.IssueUser;
-import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -12,7 +10,7 @@ import com.jfinal.plugin.activerecord.Page;
  */
 public class IssueUserService {
 
-    // private static final Log log = Log.getLog(IssueUserService.class);
+    private static final Log log = Log.getLog(IssueUserService.class);
 
     public static final IssueUserService me = new IssueUserService();
     private final IssueUser dao = new IssueUser().dao();
@@ -31,6 +29,7 @@ public class IssueUserService {
 	try {
 	    issueUser.save();
 	} catch (Exception e) {
+	    log.error("Save IssueUser Error", e);
 	    return false;
 	}
 	return true;

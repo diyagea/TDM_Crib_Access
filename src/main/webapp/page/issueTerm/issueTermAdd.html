@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>文章列表--layui后台管理模板 2.0</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<form class="layui-form" style="width:80%;">
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">刀具类型</label>
+		<div class="layui-input-block toolType">
+				<input type="radio" name="toolType" value="0" title="单项刀具" checked>
+				<input type="radio" name="toolType" value="1" title="组装刀具">
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">刀具ID</label>
+		<div class="layui-input-block">
+			<input type="text" name="toolID" class="layui-input toolID" lay-verify="required" placeholder="请输入刀具ID">
+			<!-- <select name="toolID" class="toolID" lay-filter="toolID">
+				<option value="0">铣刀</option>
+				<option value="1">铣刀2</option>
+				<option value="22">车刀</option>
+				<option value="3">钻头</option>
+				<option value="4">玉米铣刀</option>
+			</select> -->
+		</div>
+	</div>
+	<div class="layui-row">
+		<div class="magb15 layui-col-md6 layui-col-xs12">
+			<label class="layui-form-label">时间类别</label>
+			<div class="layui-input-block">
+				<select name="timeType" class="timeType" lay-filter="timeType">
+					<option value="0">分钟</option>
+					<option value="1">小时</option>
+					<option value="2">天</option>
+					<option value="3">月</option>
+				</select>
+			</div>
+		</div>
+		<div class="magb15 layui-col-md6 layui-col-xs12">
+			<label class="layui-form-label">时间限定值</label>
+			<div class="layui-input-block">
+				<input type="number" class="layui-input timeVal" lay-verify="required" placeholder="请输入数值">
+			</div>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">状态</label>
+		<div class="layui-input-block">
+			<select name="state" class="state" lay-filter="state">
+				<option value="0">正常</option>
+				<option value="1">禁用</option>
+			</select>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<label class="layui-form-label">备注信息</label>
+		<div class="layui-input-block">
+			<textarea placeholder="请输入备注信息" class="layui-textarea note"></textarea>
+		</div>
+	</div>
+	<div class="layui-form-item layui-row layui-col-xs12">
+		<div class="layui-input-block">
+			<button id="submitBtn" class="layui-btn layui-btn-sm submitBtn" lay-submit="" lay-filter="addBtn">立即添加</button>
+			<!-- <button type="reset" class="layui-btn layui-btn-sm layui-btn-primary">取消</button> -->
+		</div>
+	</div>
+</form>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="issueTermAdd.js"></script>
+</body>
+</html>
