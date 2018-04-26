@@ -25,11 +25,16 @@
 					"spread": false
 				},
 				{
-					"title": "登录",
-					"icon": "&#xe609;",
-					"href": "page/login/login.html",
-					"spread": false,
-					"target": "_blank"
+					"title": "设备-刀具权限",
+					"icon": "&#xe61c;",
+					"href": "page/limitDeviceTool/limitDeviceToolList.html",
+					"spread": false
+				},
+				{
+					"title": "时间-刀具权限",
+					"icon": "&#xe61c;",
+					"href": "page/limitTimeTool/limitDeviceToolList.html",
+					"spread": false
 				}
 			]
 		}

@@ -52,7 +52,6 @@ public class LimitUserToolController extends Controller {
      * 保存
      * /demo/limitUserTool/save
      */
-    @Before({ LimitUserToolValidator.class })
     public void save() {
 	boolean result = srv.save(getModel(LimitUserTool.class));
 	renderJson("isOk", result);
@@ -72,7 +71,6 @@ public class LimitUserToolController extends Controller {
      * 更新
      * /demo/limitUserTool/update
      */
-    @Before(LimitUserToolValidator.class)
     public void update() {
 	boolean result = srv.update(getModel(LimitUserTool.class));
 	renderJson("isOk", result);

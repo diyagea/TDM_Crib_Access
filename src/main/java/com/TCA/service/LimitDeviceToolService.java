@@ -1,6 +1,7 @@
 package com.TCA.service;
 
 import com.TCA.common.model.LimitDeviceTool;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -10,7 +11,7 @@ import com.jfinal.plugin.activerecord.Page;
  */
 public class LimitDeviceToolService {
 
-    // private static final Log log = Log.getLog(LimitDeviceToolService.class);
+    private static final Log log = Log.getLog(LimitDeviceToolService.class);
 
     public static final LimitDeviceToolService me = new LimitDeviceToolService();
     private final LimitDeviceTool dao = new LimitDeviceTool().dao();
@@ -25,30 +26,55 @@ public class LimitDeviceToolService {
     /**
      * 保存
      */
-    public void save(LimitDeviceTool limitDeviceTool) {
-	limitDeviceTool.remove("ID");
-	limitDeviceTool.save();
+    public boolean save(LimitDeviceTool limitDeviceTool) {
+	boolean result = false;
+	try {
+	    limitDeviceTool.remove("ID");
+	    result = limitDeviceTool.save();
+	} catch (Exception e) {
+	    log.error("LimitDeviceTool Save Error", e);
+	}
+	return result;
     }
 
     /**
      * 更新
      */
-    public void update(LimitDeviceTool limitDeviceTool) {
-	limitDeviceTool.update();
+    public boolean update(LimitDeviceTool limitDeviceTool) {
+	return limitDeviceTool.update();
+    }
+    
+    /**
+     * 更新
+     */
+    public boolean updateState(int ID, boolean s) {
+	int state = 0;
+	if(!s){
+	    state = 1;
+	}
+	
+	return dao.findById(ID).set("STATE", state).update();
     }
 
     /**
      * 查询
      */
-    public LimitDeviceTool findById(int limitDeviceToolId) {
-	return dao.findFirst("select * from TCA_LIMIT_DEVICE_TOOL where id=?", limitDeviceToolId);
+    public LimitDeviceTool findById(int ID) {
+	return dao.findFirst("select * from TCA_LIMIT_DEVICE_TOOL where ID=?", ID);
     }
 
     /**
      * 删除
      */
-    public void delete(int limitDeviceToolId) {
-	Db.update("delete from TCA_LIMIT_DEVICE_TOOL where id=?", limitDeviceToolId);
+    public boolean delete(int ID) {
+	int result = Db.update("delete from TCA_LIMIT_DEVICE_TOOL where ID=?", ID);
+	
+	if(result>0){
+	    return true;
+	}else{
+	    return false;
+	}
+	
     }
 
 }
