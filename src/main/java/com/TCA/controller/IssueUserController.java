@@ -77,8 +77,8 @@ public class IssueUserController extends Controller {
      * /demo/issueUser/update
      */
     public void update() {
-	srv.update(getModel(IssueUser.class));
-	renderJson("isOk", true);
+	boolean result = srv.update(getModel(IssueUser.class));
+	renderJson("isOk", result);
     }
     
     /**

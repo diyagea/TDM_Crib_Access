@@ -13,15 +13,15 @@
 			"spread": false
 		},
 		{
-			"title": "其他页面",
+			"title": "权限管理",
 			"icon": "&#xe630;",
 			"href": "",
-			"spread": false,
+			"spread": true,
 			"children": [
 				{
-					"title": "404页面",
+					"title": "用户-刀具权限",
 					"icon": "&#xe61c;",
-					"href": "page/404.html",
+					"href": "page/limitUserTool/limitUserToolList.html",
 					"spread": false
 				},
 				{

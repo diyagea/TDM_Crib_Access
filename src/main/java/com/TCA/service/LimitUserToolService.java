@@ -1,6 +1,7 @@
 package com.TCA.service;
 
 import com.TCA.common.model.LimitUserTool;
+import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -10,7 +11,7 @@ import com.jfinal.plugin.activerecord.Page;
  */
 public class LimitUserToolService {
 
-    // private static final Log log = Log.getLog(LimitUserToolService.class);
+    private static final Log log = Log.getLog(LimitUserToolService.class);
 
     public static final LimitUserToolService me = new LimitUserToolService();
     private final LimitUserTool dao = new LimitUserTool().dao();
@@ -25,30 +26,54 @@ public class LimitUserToolService {
     /**
      * 保存
      */
-    public void save(LimitUserTool limitUserTool) {
-	limitUserTool.remove("ID");
-	limitUserTool.save();
+    public boolean save(LimitUserTool limitUserTool) {
+	boolean result = false;
+	try {
+	    limitUserTool.remove("ID");
+	    result = limitUserTool.save();
+	} catch (Exception e) {
+	    log.error("LimitUserTool Save Error", e);
+	}
+	return result;
     }
 
     /**
      * 更新
      */
-    public void update(LimitUserTool limitUserTool) {
-	limitUserTool.update();
+    public boolean update(LimitUserTool limitUserTool) {
+	return limitUserTool.update();
     }
 
+    /*
+     *  仅更新状态
+     */
+    public boolean updateState(String ID, Boolean s){
+	int state = 0;
+	if(!s){
+	    state = 1;
+	}
+	
+	return dao.findById(ID).set("STATE", state).update();
+    }
+    
     /**
      * 查询
      */
-    public LimitUserTool findById(int limitUserToolId) {
-	return dao.findFirst("select * from TCA_LIMIT_USER_TOOL where id=?", limitUserToolId);
+    public LimitUserTool findById(int ID) {
+	return dao.findFirst("select * from TCA_LIMIT_USER_TOOL where ID=?", ID);
     }
 
     /**
      * 删除
      */
-    public void delete(int limitUserToolId) {
-	Db.update("delete from TCA_LIMIT_USER_TOOL where id=?", limitUserToolId);
+    public boolean delete(int ID) {
+	int result = Db.update("delete from TCA_LIMIT_USER_TOOL where ID=?", ID);
+	if(result>0){
+	    return true;
+	}else{
+	    return false;
+	}
     }
+
 
 }

@@ -38,8 +38,8 @@ public class IssueUserService {
     /**
      * 更新
      */
-    public void update(IssueUser issueUser) {
-	issueUser.update();
+    public boolean update(IssueUser issueUser) {
+	return issueUser.update();
     }
 
     /*
