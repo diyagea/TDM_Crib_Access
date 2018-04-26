@@ -1,39 +1,39 @@
 {
 	"contentManagement": [
 		{
-			"title": "领取用户列表",
-			"icon": "icon-text",
+			"title": "领取用户设置",
+			"icon": "&#xe613;",
 			"href": "page/issueUser/issueUserList.html",
 			"spread": false
 		},
 		{
 			"title": "时间限制设置",
-			"icon": "icon-text",
+			"icon": "&#xe60e;",
 			"href": "page/issueTerm/issueTermList.html",
 			"spread": false
 		},
 		{
 			"title": "权限管理",
-			"icon": "&#xe630;",
+			"icon": "&#xe62a;",
 			"href": "",
 			"spread": true,
 			"children": [
 				{
 					"title": "用户-刀具权限",
-					"icon": "&#xe61c;",
+					"icon": "&#xe60a;",
 					"href": "page/limitUserTool/limitUserToolList.html",
 					"spread": false
 				},
 				{
 					"title": "设备-刀具权限",
-					"icon": "&#xe61c;",
+					"icon": "&#xe60a;",
 					"href": "page/limitDeviceTool/limitDeviceToolList.html",
 					"spread": false
 				},
 				{
 					"title": "时间-刀具权限",
-					"icon": "&#xe61c;",
-					"href": "page/limitTimeTool/limitDeviceToolList.html",
+					"icon": "&#xe60a;",
+					"href": "page/limitTimeTool/limitTimeToolList.html",
 					"spread": false
 				}
 			]
