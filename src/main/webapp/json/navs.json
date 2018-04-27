@@ -1,22 +1,28 @@
 {
 	"contentManagement": [
 		{
-			"title": "领取用户设置",
-			"icon": "&#xe613;",
+			"title": "领取记录查看",
+			"icon": "&#xe615;",
+			"href": "page/issueRecord/issueRecordList.html",
+			"spread": false
+		},
+		{
+			"title": "领取人员管理",
+			"icon": "&#xe612;",
 			"href": "page/issueUser/issueUserList.html",
 			"spread": false
 		},
 		{
-			"title": "时间限制设置",
+			"title": "刀具期限设定",
 			"icon": "&#xe60e;",
 			"href": "page/issueTerm/issueTermList.html",
 			"spread": false
 		},
 		{
-			"title": "权限管理",
+			"title": "权限配置",
 			"icon": "&#xe62a;",
 			"href": "",
-			"spread": true,
+			"spread": false,
 			"children": [
 				{
 					"title": "用户-刀具权限",

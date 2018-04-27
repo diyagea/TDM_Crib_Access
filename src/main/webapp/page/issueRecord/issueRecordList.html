@@ -1,44 +1,106 @@
-#@layout()
-#define main()
-<h1>IssueRecord管理&nbsp;&nbsp;
-<a href="/issueRecord/add">创建</a>
-</h1>
-<div class="table_box">
-	<table class="list">
-		<tbody>
-			<tr>
-				<th width="">id</th>
-				<th width="">USERCODE</th>
-				<th width="">COSTUNIT</th>
-				<th width="">WORKPLACE</th>
-				<th width="">TOOLID</th>
-				<th width="">COUNT</th>
-				<th width="">ISSUETIME</th>
-				<th width="">DEADLINE</th>
-				<th width="">STATE</th>
-				<th width="">TYPE</th>
-			</tr>
-			
-			#for(x : page.getList())
-			<tr>
-				<td>#(x.ID)</td>
-		      	<td>#(x.USERCODE)</td>
-		      	<td>#(x.COSTUNIT)</td>
-		      	<td>#(x.WORKPLACE)</td>
-		      	<td>#(x.TOOLID)</td>
-		      	<td>#(x.COUNT)</td>
-		      	<td>#(x.ISSUETIME)</td>
-		      	<td>#(x.DEADLINE)</td>
-		      	<td>#(x.STATE)</td>
-		      	<td>#(x.TYPE)</td>
-				<td style="text-align:left;">
-					&nbsp;&nbsp;<a href="/issueRecord/delete/#(x.ID)">删除</a>
-					&nbsp;&nbsp;<a href="/issueRecord/edit/#(x.ID)">修改</a>
-				</td>
-			</tr>
-			#end
-		</tbody>
-	</table>
-	#@paginate(page.pageNumber, page.totalPage, "/issueRecord/")
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>权限设置--库房权限控制</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../css/public.css" media="all" />
+</head>
+<body class="childrenBody">
+<div class="layui-row">
+<fieldset class="layui-elem-field">
+  <legend>条件筛选查询</legend>
+  <div class="layui-field-box">
+	<form class="layui-form" style="width:100%;">
+		<div class="layui-row">
+			<div class="magb15 layui-col-md6 layui-col-xs12">
+				<label class="layui-form-label">成本单元：</label>
+				<div class="layui-input-block">
+					<input type="text" name="costunit" class="layui-input costunit" placeholder="请输入costunit">
+					<!-- <div class="layui-input-block">
+						<select name="userGrade" class="userGrade" lay-filter="userGrade">
+							<option value="0">注册会员</option>
+							<option value="1">中级会员</option>
+							<option value="2">高级会员</option>
+							<option value="3">钻石会员</option>
+							<option value="4">超级会员</option>
+						</select>
+					</div> -->
+				</div>
+			</div>
+			<div class="magb15 layui-col-md6 layui-col-xs12">
+				<label class="layui-form-label">领取人员：</label>
+				<div class="layui-input-block">
+					<input type="text" name="userCode" class="layui-input userCode" placeholder="请输入USERCODE">
+					<!-- <div class="layui-input-block">
+						<select name="userGrade" class="userGrade" lay-filter="userGrade">
+							<option value="0">注册会员</option>
+							<option value="1">中级会员</option>
+							<option value="2">高级会员</option>
+							<option value="3">钻石会员</option>
+							<option value="4">超级会员</option>
+						</select>
+					</div> -->
+				</div>
+			</div>
+		</div>
+		<div class="layui-row">
+			<div class="magb15 layui-col-md6 layui-col-xs12">
+				<label class="layui-form-label">刀具ID：</label>
+				<div class="layui-input-block">
+					<input type="text" name="toolID" class="layui-input toolID" placeholder="请输入刀具ID">
+					<!-- <select name="toolID" class="toolID" lay-filter="toolID">
+						<option value="0">铣刀</option>
+						<option value="1">铣刀2</option>
+						<option value="22">车刀</option>
+						<option value="3">钻头</option>
+						<option value="4">玉米铣刀</option>
+					</select> -->
+				</div>
+			</div>
+			<div class="magb15 layui-col-md6 layui-col-xs12">
+				<label class="layui-form-label">刀具状态：</label>
+				<div class="layui-input-block">
+					<input type="checkbox" name="state" title="未归还" value="1">
+					<input type="checkbox" name="state" title="已归还" value="0"> 
+					<input type="checkbox" name="state" title="已到期" value="-1"> 
+				</div>
+			</div>
+		</div>
+	
+		<div class="layui-form-item layui-row layui-col-xs12">
+			<div class="layui-input-block">
+				<button id="submitBtn" class="layui-btn layui-btn-normal layui-btn-sm submitBtn" lay-submit="" lay-filter="addBtn">筛选查询</button>
+				<button type="reset" class="layui-btn layui-btn-sm layui-btn-primary resetBtn">清空条件</button>
+			</div>
+		</div>
+	</form>
+  </div>
+</fieldset>
 </div>
-#end
+<div class="layui-row">
+	<form class="layui-form">
+		<!-- 表格 -->
+		<table id="dataList" lay-filter="dataList"></table>
+	
+		<!--操作-->
+		<script type="text/html" id="dataListBar">
+		<a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+		<a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="del">删除</a>
+	</script>
+		
+		<script type="text/html" id="stateSwitch">
+  		<input type="checkbox" name="STATE" value="{{d.ID}}" lay-skin="switch" lay-text="启用|禁用" lay-filter="stateSwitch" {{ d.STATE == 0 ? 'checked' : '' }}>
+	</script>
+	</form>
+</div>
+<script type="text/javascript" src="../../layui/layui.js"></script>
+<script type="text/javascript" src="issueRecordList.js"></script>
+</body>
+</html>

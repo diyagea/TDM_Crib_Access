@@ -1,10 +1,13 @@
 package com.TCA.controller;
 
+import java.util.HashMap;
+
 import com.TCA.common.model.IssueRecord;
 import com.TCA.service.IssueRecordService;
 import com.TCA.validator.IssueRecordValidator;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
+import com.jfinal.plugin.activerecord.Page;
 
 /**
  * IssueRecord 管理
@@ -13,7 +16,7 @@ import com.jfinal.core.Controller;
  */
 public class IssueRecordController extends Controller {
 
-    //private static final Log log = Log.getLog(IssueRecordController.class);
+    // private static final Log log = Log.getLog(IssueRecordController.class);
 
     static IssueRecordService srv = IssueRecordService.me;
 
@@ -27,9 +30,43 @@ public class IssueRecordController extends Controller {
     /**
      * 查询列表
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     public void list() {
-	setAttr("page", srv.paginate(getParaToInt(0, 1), 10));
-	render("issueRecordList.html");
+	int page = getParaToInt("page");
+	int limit = getParaToInt("limit");
+	Page p = srv.paginate(page, limit);
+	HashMap m = new HashMap();
+	m.put("code", 0);
+	m.put("msg", "");
+	m.put("count", p.getTotalRow());
+	m.put("data", p.getList());
+
+	renderJson(m);
+    }
+    
+    /**
+     * 查询列表（条件）
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public void listWithFilter() {
+	int page = getParaToInt("page");
+	int limit = getParaToInt("limit");
+	
+	//filter
+	String toolID = getPara("TOOLID");
+	String costunit = getPara("COSTUNIT");
+	String userCode = getPara("USERCODE");
+	String state = getPara("STATE");
+	
+	Page p = srv.paginate(page, limit, toolID, costunit, userCode, state);
+	HashMap m = new HashMap();
+	m.put("code", 0);
+	m.put("msg", "");
+	m.put("count", p.getTotalRow());
+	m.put("data", p.getList());
+
+	
+	renderJson(m);
     }
 
     public void add() {
@@ -41,14 +78,14 @@ public class IssueRecordController extends Controller {
      */
     @Before({ IssueRecordValidator.class })
     public void save() {
-	//get model from web view
+	// get model from web view
 	IssueRecord issueRecord = getModel(IssueRecord.class);
-	
-	//call service method
+
+	// call service method
 	boolean result = srv.save(issueRecord);
-	
+
 	// return result
-	//renderJson("isOk", result);
+	// renderJson("isOk", result);
 	redirect("/issueRecord");
     }
 
