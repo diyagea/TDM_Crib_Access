@@ -39,4 +39,129 @@ layui.use(['form','element','layer','jquery'],function(){
     $(".panel a").click(function(){
         parent.addTab($(this));
     })
-})
+
+    //饼状图
+    var userPie = echarts.init(document.getElementById("userToolPie"));
+    var devicePie = echarts.init(document.getElementById("deviceToolPie"));
+    var userOption = null, deviceOption = null;
+    userOption = {
+    	    title : {
+    	        text: '当前员工领用刀具数量占比',
+    	        subtext: '（仅包括未归还刀具）',
+    	        x:'center'
+    	    },
+    	    tooltip : {
+    	        trigger: 'item',
+    	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    	    },
+    	    legend: {
+    	        type: 'scroll',
+    	        orient: 'vertical',
+    	        left: 10,
+    	        top: 20,
+    	        bottom: 20,
+    	        //data: pieData.userLegend,
+    	        //selected: pieData.userLegendSelected
+    	    },
+    	    series : [
+    	        {
+    	            name: '刀具数量占比',
+    	            type: 'pie',
+    	            radius : '55%',
+    	            center: ['50%', '60%'],
+    	            //data: pieData.userData,
+    	            itemStyle: {
+    	                emphasis: {
+    	                    shadowBlur: 10,
+    	                    shadowOffsetX: 0,
+    	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+    	                }
+    	            }
+    	        }
+    	    ]
+    	};
+    deviceOption = {
+    	    title : {
+    	        text: '当前设备使用刀具数量占比',
+    	        subtext: '（仅包括未归还刀具）',
+    	        x:'center'
+    	    },
+    	    tooltip : {
+    	        trigger: 'item',
+    	        formatter: "{a} <br/>{b} : {c} ({d}%)"
+    	    },
+    	    legend: {
+    	        type: 'scroll',
+    	        orient: 'vertical',
+    	        left: 10,
+    	        top: 20,
+    	        bottom: 20,
+    	        //data: pieData.deviceLegend,
+    	        //selected: pieData.deviceLegendSelected
+    	    },
+    	    series : [
+    	        {
+    	            name: '刀具数量占比',
+    	            type: 'pie',
+    	            radius : '55%',
+    	            center: ['50%', '60%'],
+    	            //data: pieData.deviceData,
+    	            itemStyle: {
+    	                emphasis: {
+    	                    shadowBlur: 10,
+    	                    shadowOffsetX: 0,
+    	                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+    	                }
+    	            }
+    	        }
+    	    ]
+    	};
+    	if (userOption && typeof userOption === "object") {
+    		userPie.setOption(userOption, true);
+    		devicePie.setOption(deviceOption, true);
+    	}
+    	
+    	/*自适应*/
+		$(window).resize(function() {
+			userPie.resize();
+			devicePie.resize();
+		});
+		
+	    function getPieData(){
+	    	var data;
+	    	$.ajax({
+	            type: "GET",
+	            url: "/issueRecord/pieData",
+	            data: {},
+	            dataType: "json",
+	            success: function(data){
+	            	devicePie.setOption({
+	            		legend: {
+	            	        data: data.deviceLegend,
+	            	        //selected: data.deviceLegendSelected
+	            	    },
+	            	    series: [{
+	                        data: data.deviceData
+	                    }]
+	            	});
+	            	userPie.setOption({
+	            		legend: {
+	            	        data: data.userLegend,
+	            	        //selected: data.deviceLegendSelected
+	            	    },
+	            	    series: [{
+	                        data: data.userData
+	                    }]
+	            	});
+	            }
+	        });
+	    	return data;
+	    };
+	    
+	    //init
+	    getPieData();
+	    //loadData per 1 mins
+	    setInterval(getPieData, 1000 * 60);
+		
+		
+}); // layui range end

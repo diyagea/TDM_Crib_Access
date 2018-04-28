@@ -13,23 +13,32 @@
 	<link rel="stylesheet" href="../css/public.css" media="all" />
 </head>
 <body class="childrenBody">
-	<blockquote class="layui-elem-quote layui-bg-green">
+	<blockquote class="layui-elem-quote layui-bg-green" style="margin: 20px 0px;">
 		<div id="nowTime"></div>
 	</blockquote>
-	<div class="layui-row layui-col-space10">
-		<div class="layui-col-lg6 layui-col-md12">
-			<blockquote class="layui-elem-quote layui-quote-nm title">当前人员借用刀具占比</blockquote>
-			<!-- 表格 -->
-			<table id="dataList1" lay-filter="dataList1"></table>
+	
+  		<div class="layui-row">
+			<div class="layui-col-lg6 layui-col-md12">
+				<fieldset class="layui-elem-field">
+				  <legend>用户图表</legend>
+				  <div class="layui-field-box">
+				  	<div id="userToolPie" style="height: 500px; margin: 20px;"></div>
+				  </div>
+				</fieldset>
+			</div>
+			<div class="layui-col-lg6 layui-col-md12">
+				<fieldset class="layui-elem-field">
+				  <legend>设备图表</legend>
+				  <div class="layui-field-box">
+				  	<div id="deviceToolPie" style="height: 500px; margin: 20px;"></div>
+				  </div>
+				</fieldset>
+			</div>
 		</div>
-		<div class="layui-col-lg6 layui-col-md12">
-			<blockquote class="layui-elem-quote layui-quote-nm title">当前设备借用刀具占比</blockquote>
-			<!-- 表格 -->
-			<table id="dataList2" lay-filter="dataList2"></table>
-		</div>
-	</div>
 
+	
 	<script type="text/javascript" src="../layui/layui.js"></script>
+	<script type="text/javascript" src="../js/echarts.js"></script>
 	<script type="text/javascript" src="../js/main.js"></script>
 </body>
 </html>

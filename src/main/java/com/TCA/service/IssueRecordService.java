@@ -1,9 +1,15 @@
 package com.TCA.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.TCA.common.model.IssueRecord;
+import com.TCA.common.model.IssueUser;
+import com.jfinal.kit.Kv;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Page;
+import com.jfinal.plugin.activerecord.Record;
 
 /**
  * IssueRecord 管理
@@ -16,6 +22,53 @@ public class IssueRecordService {
     public static final IssueRecordService me = new IssueRecordService();
     private final IssueRecord dao = new IssueRecord().dao();
 
+    /**
+     * query list
+     * @param state
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Kv getPieData(){
+	
+	List<Record> userRecord = Db.find("SELECT R.USERCODE, U.NAME, SUM(COUNT) TOOLCOUNT FROM TCA_ISSUE_RECORD R  INNER JOIN TCA_ISSUE_USER U ON U.USERCODE=R.USERCODE AND R.STATE<>0 GROUP BY R.USERCODE, U.NAME ");
+	List<Record> deviceRecord = Db.find("SELECT COSTUNIT, SUM(COUNT)TOOLCOUNT FROM (SELECT * FROM TCA_ISSUE_RECORD WHERE STATE != 0) TCA_ISSUE_RECORD GROUP BY COSTUNIT ");
+	
+	List<String> userLegend = new ArrayList<String>();
+	List<String> deviceLegend = new ArrayList<String>();
+	List<Kv> userData = new ArrayList<Kv>();
+	List<Kv> deviceData = new ArrayList<Kv>();
+	Kv returnData = new Kv();
+	
+	//userData
+	for(Record r : userRecord){
+	    userLegend.add(r.getStr("NAME"));
+	    
+	    Kv temp = new Kv();
+	    temp.put("name", r.getStr("NAME"));
+	    temp.put("value", r.getStr("TOOLCOUNT"));
+	    userData.add(temp);
+	}
+
+	//deviceData
+	for(Record r : deviceRecord){
+	    deviceLegend.add(r.getStr("COSTUNIT"));
+	    
+	    Kv temp = new Kv();
+	    temp.put("name", r.getStr("COSTUNIT"));
+	    temp.put("value", r.getStr("TOOLCOUNT"));
+	    deviceData.add(temp);
+	}
+	
+	returnData.put("userLegend", userLegend);
+	//returnData.put("userLegendSelected", userLegend.subList(0, 9));
+	returnData.put("userData", userData);
+	returnData.put("deviceLegend", deviceLegend);
+	//returnData.put("deviceLegendSelected", deviceLegend.subList(0, 9));
+	returnData.put("deviceData", deviceData);
+	
+	return returnData;
+    }
+    
     /**
      * 列表-分页
      */
