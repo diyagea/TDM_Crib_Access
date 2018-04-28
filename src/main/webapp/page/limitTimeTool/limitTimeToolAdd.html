@@ -19,33 +19,15 @@
 	
 	<div class="layui-row">
 		<div class="magb15 layui-col-md4 layui-col-xs12">
-			<label class="layui-form-label">成本单元</label>
+			<label class="layui-form-label">开始时间</label>
 			<div class="layui-input-block">
-				<input type="text" name="startTime" class="layui-input startTime" lay-verify="required" placeholder="startTime">
-				<!-- <div class="layui-input-block">
-					<select name="userGrade" class="userGrade" lay-filter="userGrade">
-						<option value="0">注册会员</option>
-						<option value="1">中级会员</option>
-						<option value="2">高级会员</option>
-						<option value="3">钻石会员</option>
-						<option value="4">超级会员</option>
-					</select>
-				</div> -->
+				<input type="text" id="startTime" name="startTime" class="layui-input startTime" lay-verify="required" placeholder="开始时间" readonly>
 			</div>
 		</div>
 		<div class="magb15 layui-col-md4 layui-col-xs12">
-			<label class="layui-form-label">车间</label>
+			<label class="layui-form-label">结束时间</label>
 			<div class="layui-input-block">
-				<input type="text" name="endTime" class="layui-input endTime" lay-verify="required" placeholder="endTime">
-				<!-- <div class="layui-input-block">
-					<select name="userGrade" class="userGrade" lay-filter="userGrade">
-						<option value="0">注册会员</option>
-						<option value="1">中级会员</option>
-						<option value="2">高级会员</option>
-						<option value="3">钻石会员</option>
-						<option value="4">超级会员</option>
-					</select>
-				</div> -->
+				<input type="text" id="endTime" name="endTime" class="layui-input endTime" lay-verify="required" placeholder="结束时间" readonly>
 			</div>
 		</div>
 	</div>
@@ -54,13 +36,6 @@
 		<label class="layui-form-label">刀具ID</label>
 		<div class="layui-input-block">
 			<input type="text" name="toolID" class="layui-input toolID" lay-verify="required" placeholder="请输入刀具ID">
-			<!-- <select name="toolID" class="toolID" lay-filter="toolID">
-				<option value="0">铣刀</option>
-				<option value="1">铣刀2</option>
-				<option value="22">车刀</option>
-				<option value="3">钻头</option>
-				<option value="4">玉米铣刀</option>
-			</select> -->
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">

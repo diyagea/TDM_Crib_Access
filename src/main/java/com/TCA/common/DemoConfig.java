@@ -68,11 +68,11 @@ public class DemoConfig extends JFinalConfig {
 
 	// TDM Crib Access Controller
 	me.add("/issueRecord", IssueRecordController.class, "/page/issueRecord/");
-	me.add("/issueTerm", IssueTermController.class);
+	me.add("/issueTerm", IssueTermController.class, "/page/issueTerm/");
 	me.add("/issueUser", IssueUserController.class, "/page/issueUser/");
-	me.add("/limitDeviceTool", LimitDeviceToolController.class);
-	me.add("/limitTimeTool", LimitTimeToolController.class);
-	me.add("/limitUserTool", LimitUserToolController.class);
+	me.add("/limitDeviceTool", LimitDeviceToolController.class, "/page/limitDeviceTool/");
+	me.add("/limitTimeTool", LimitTimeToolController.class, "/page/limitTimeTool/");
+	me.add("/limitUserTool", LimitUserToolController.class, "/page/limitUserTool/");
     }
 
     public void configEngine(Engine me) {

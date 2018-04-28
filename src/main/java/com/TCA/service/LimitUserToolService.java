@@ -22,7 +22,7 @@ public class LimitUserToolService {
     public Page<LimitUserTool> paginate(int pageNumber, int pageSize) {
 	return dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_LIMIT_USER_TOOL");
     }
-
+    
     /**
      * 保存
      */

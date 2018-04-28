@@ -2,6 +2,24 @@ layui.use(['form','layer'],function(){
     var form = layui.form
         layer = parent.layer === undefined ? layui.layer : top.layer,
         $ = layui.jquery;
+    
+    $.post("/limitUserTool/addBefore",{},function(result){
+    	var editID = $(".userCodeHide").val();
+    	console.log(editID);
+    	var selectText = "<option value=''>直接选择或搜索选择</option>";
+    	for(var i=0;i<result.userList.length;i++){
+    		var u = result.userList[i];
+    		if(u.USERCODE == editID){
+    			selectText += "<option value='"+u.USERCODE+"' selected>"+u.NAME+"</option>";
+    		}else{
+    			selectText += "<option value='"+u.USERCODE+"'>"+u.NAME+"</option>";
+    		}
+    	}
+   	 	$(".userCode").html(selectText);
+    	
+    	form.render('select'); //刷新select选择框渲染
+    });
+    
 
     //add method
     form.on("submit(addBtn)",function(data){

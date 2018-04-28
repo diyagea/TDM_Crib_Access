@@ -31,9 +31,11 @@
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
-		<label class="layui-form-label">员工编号</label>
+		<label class="layui-form-label">员工</label>
 		<div class="layui-input-block">
-			<input type="text" name="userCode" class="layui-input userCode" lay-verify="required" placeholder="请输入员工编号">
+			<input type="hidden" name="userCodeHide" class="layui-input userCodeHide" lay-verify="required" placeholder="请输入员工编号">
+			<select name="userCode" class="userCode" lay-filter="userCode" lay-verify="required"  lay-search="">
+			</select>
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">

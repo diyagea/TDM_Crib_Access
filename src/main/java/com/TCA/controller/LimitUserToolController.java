@@ -3,9 +3,8 @@ package com.TCA.controller;
 import java.util.HashMap;
 
 import com.TCA.common.model.LimitUserTool;
+import com.TCA.service.IssueUserService;
 import com.TCA.service.LimitUserToolService;
-import com.TCA.validator.LimitUserToolValidator;
-import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -19,6 +18,7 @@ public class LimitUserToolController extends Controller {
     // private static final Log log = Log.getLog(LimitUserToolController.class);
 
     static LimitUserToolService srv = LimitUserToolService.me;
+    static IssueUserService userSrv = IssueUserService.me;
 
     /**
      * 列表
@@ -26,16 +26,19 @@ public class LimitUserToolController extends Controller {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void list() {
-	int page = getParaToInt("page");
-	int limit = getParaToInt("limit");
-	String key = getPara("key");
-	System.out.println(key);
+	int page = getParaToInt("page", 1);
+	int limit = getParaToInt("limit", 10);
 	Page p = srv.paginate(page, limit);
 	HashMap m = new HashMap();
 	m.put("code", 0);
 	m.put("msg", "");
 	m.put("count", p.getTotalRow());
 	m.put("data", p.getList());
+	
+	for(Object o : p.getList()){
+	    
+	    System.out.println(((LimitUserTool)o).getUSERNAME());
+	}
 
 	renderJson(m);
     }
@@ -44,8 +47,8 @@ public class LimitUserToolController extends Controller {
      * 准备添加
      * /demo/limitUserTool/add
      */
-    public void add() {
-	render("limitUserToolAdd.html");
+    public void addBefore() {
+	renderJson("userList", userSrv.listWithState(0));
     }
 
     /**

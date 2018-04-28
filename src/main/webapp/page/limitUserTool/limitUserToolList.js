@@ -18,7 +18,7 @@ layui.use(['form','layer','table','laytpl'],function(){
         cols : [[
             //{type: "checkbox", fixed:"left", width:50},
             {type:'numbers'},
-            {field: 'USERCODE', title: '用户编号', width:150, align:"center"},
+            {field: 'USERCODE', title: '用户', width:150, align:"center"},
             {field: 'TOOLID', title: '刀具ID', width:150, align:"center"},
             {field: 'TYPE', title: '刀具类别', width:120, align:"center", templet:function(d){
             	var title='组装刀具';
@@ -68,7 +68,7 @@ layui.use(['form','layer','table','laytpl'],function(){
 	                //console.log(body.find(".userCode"));
 	                
 	                body.find(".ID").val(data.ID);  
-	                body.find(".userCode").val(data.USERCODE);  
+	                body.find(".userCodeHide").val(data.USERCODE);  
                     body.find(".toolID").val(data.TOOLID);  
                     body.find(".toolType input[value="+data.TYPE+"]").prop("checked","checked");  //radio
                     body.find(".state").val(data.STATE);    

@@ -1,8 +1,20 @@
-layui.use(['form','layer'],function(){
-    var form = layui.form
-        layer = parent.layer === undefined ? layui.layer : top.layer,
-        $ = layui.jquery;
-
+layui.use(['form','layer','laydate'],function(){
+    var form = layui.form;
+    var laydate = layui.laydate;
+    var layer = parent.layer === undefined ? layui.layer : top.layer;
+    var $ = layui.jquery;
+    
+    //时间选择器
+    laydate.render({
+      elem: '#startTime',
+      type: 'time'
+    });
+    laydate.render({
+        elem: '#endTime',
+        type: 'time'
+    });
+    
+    
     //add method
     form.on("submit(addBtn)",function(data){
         //弹出loading

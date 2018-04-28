@@ -1,5 +1,7 @@
 package com.TCA.service;
 
+import java.util.List;
+
 import com.TCA.common.model.IssueUser;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Page;
@@ -15,6 +17,10 @@ public class IssueUserService {
     public static final IssueUserService me = new IssueUserService();
     private final IssueUser dao = new IssueUser().dao();
 
+    public List<IssueUser> listWithState(int state){
+	return IssueUser.dao.find("SELECT * FROM TCA_ISSUE_USER WHERE STATE = ?", state);
+    }
+    
     /**
      * 列表-分页
      */
