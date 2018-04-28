@@ -18,25 +18,25 @@ layui.use(['form','layer','table','laytpl'],function(){
         cols : [[
             //{type: "checkbox", fixed:"left", width:50},
             {type:'numbers'},
-            {field: 'USERCODE', title: '员工编号', width:150, align:"center"},
-            {field: 'COSTUNIT', title: '成本单元', width:150, align:"center"},
-            {field: 'WORKPLACE', title: '车间', width:150, align:"center"},
-            {field: 'TOOLID', title: '刀具ID', width:150, align:"center"},
-            {field: 'TYPE', title: '刀具类别', width:120, align:"center", templet:function(d){
+            {field: 'USERCODE', title: '员工编号', minWidth:150, align:"center"},
+            {field: 'COSTUNIT', title: '成本单元', minWidth:150, align:"center"},
+            {field: 'WORKPLACE', title: '车间', minWidth:150, align:"center"},
+            {field: 'TOOLID', title: '刀具ID', minWidth:150, align:"center"},
+            {field: 'TYPE', title: '刀具类别', width:100, align:"center", templet:function(d){
             	var title='组装刀具';
             	if(d.TYPE==0){
             		title='单项刀具';
             	}
             	return title;
             }},
-            {field: 'COUNT', title: '领取数量', minWidth:150, align:"center"},
-            {field: 'ISSUETIME', title: '领取时间', align:'center',minWidth:200},
-            {field: 'DEADLINE', title: '到期时间', align:'center',minWidth:200},
+            {field: 'COUNT', title: '领取数量', width:100, align:"center"},
+            {field: 'ISSUETIME', title: '领取时间', width:150, align:'center'},
+            {field: 'DEADLINE', title: '到期时间', width:150, align:'center'},
             {field: 'STATE', title: '状态', width:100, unresize: true,  align:'center',templet:function(d){
             	var title;
-            	if(d.TYPE==0){
+            	if(d.STATE==0){
             		title='<p class="layui-bg-green">已归还</p>';
-            	}else if(d.type==1){
+            	}else if(d.STATE==1){
             		title='<p class="layui-bg-orange">未归还</p>';
             	}else{
             		title='<p class="layui-bg-red">已超时</p>';
@@ -65,7 +65,9 @@ layui.use(['form','layer','table','laytpl'],function(){
     		    curr: 1 //重新从第 1 页开始
     		  }
   	  	});
-  	  	layer.msg("加载成功！");
+    	layer.msg('加载成功', {
+    		  time: 1000
+    	});   
 	    // cancel form action
 	    return false;
     });
