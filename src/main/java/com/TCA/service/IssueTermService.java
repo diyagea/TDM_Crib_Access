@@ -58,8 +58,8 @@ public class IssueTermService {
     /**
      * 查询
      */
-    public IssueTerm findById(String issueTermId) {
-	return dao.findFirst("select * from TCA_ISSUE_TERM where TOOLID=?", issueTermId);
+    public IssueTerm findByToolID(String toolID) {
+	return dao.findFirst("select * from TCA_ISSUE_TERM where TOOLID=?", toolID);
     }
 
     /**

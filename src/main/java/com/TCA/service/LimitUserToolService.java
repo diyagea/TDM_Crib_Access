@@ -62,6 +62,13 @@ public class LimitUserToolService {
     public LimitUserTool findById(int ID) {
 	return dao.findFirst("select * from TCA_LIMIT_USER_TOOL where ID=?", ID);
     }
+    
+    /**
+     * 查询
+     */
+    public LimitUserTool find(String uCode, String toolID, int toolType) {
+	return dao.findFirst("SELECT * FROM TCA_LIMIT_USER_TOOL WHERE USERCODE=? AND TOOLID=? AND TYPE=? ", uCode, toolID, toolType);
+    }
 
     /**
      * 删除

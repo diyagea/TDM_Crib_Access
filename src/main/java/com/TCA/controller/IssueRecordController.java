@@ -1,15 +1,12 @@
 package com.TCA.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.TCA.common.model.IssueRecord;
 import com.TCA.service.IssueRecordService;
 import com.TCA.validator.IssueRecordValidator;
 import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.Kv;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -28,6 +25,10 @@ public class IssueRecordController extends Controller {
      */
     public void pieData() {
 	renderJson(srv.getPieData());
+    }
+    
+    public void doIssue(){
+	
     }
 
     /**

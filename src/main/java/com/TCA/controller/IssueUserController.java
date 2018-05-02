@@ -63,16 +63,6 @@ public class IssueUserController extends Controller {
     }
 
     /**
-     * 准备更新
-     * /demo/issueUser/edit
-     */
-    public void edit() {
-	IssueUser issueUser = srv.findById(getParaToInt("id"));
-	setAttr("issueUser", issueUser);
-	render("issueUserEdit.html");
-    }
-
-    /**
      * 更新
      * /demo/issueUser/update
      */
@@ -94,7 +84,7 @@ public class IssueUserController extends Controller {
      * /demo/issueUser/view
      */
     public void view() {
-	IssueUser issueUser = srv.findById(getParaToInt("USERCODE"));
+	IssueUser issueUser = srv.findByUCode(getPara("USERCODE"));
 	setAttr("issueUser", issueUser);
 	render("issueUserView.html");
     }

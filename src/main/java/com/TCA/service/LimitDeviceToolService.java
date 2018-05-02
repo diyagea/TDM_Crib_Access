@@ -62,6 +62,13 @@ public class LimitDeviceToolService {
     public LimitDeviceTool findById(int ID) {
 	return dao.findFirst("select * from TCA_LIMIT_DEVICE_TOOL where ID=?", ID);
     }
+    
+    /**
+     * 查询
+     */
+    public LimitDeviceTool find(String costunit, String workplace, String toolID, int toolType) {
+	return dao.findFirst("SELECT * FROM TCA_LIMIT_DEVICE_TOOL WHERE COSTUNIT=? AND WORKPLACE=? AND TOOLID=? AND TYPE=? ", costunit, workplace, toolID, toolType);
+    }
 
     /**
      * 删除

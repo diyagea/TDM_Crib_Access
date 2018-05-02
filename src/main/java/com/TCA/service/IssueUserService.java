@@ -63,8 +63,8 @@ public class IssueUserService {
     /**
      * 查询
      */
-    public IssueUser findById(int issueUserId) {
-	return dao.findFirst("select * from TCA_ISSUE_USER where id=?", issueUserId);
+    public IssueUser findByUCode(String uSERCODE) {
+	return dao.findFirst("select * from TCA_ISSUE_USER where USERCODE=?", uSERCODE);
     }
 
     /**
