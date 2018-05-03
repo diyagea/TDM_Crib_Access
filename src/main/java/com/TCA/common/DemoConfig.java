@@ -18,6 +18,7 @@ import com.jfinal.core.JFinal;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.dialect.SqlServerDialect;
+import com.jfinal.plugin.cron4j.Cron4jPlugin;
 import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 
@@ -97,6 +98,10 @@ public class DemoConfig extends JFinalConfig {
 	// 所有映射在 MappingKit 中自动化搞定
 	_MappingKit.mapping(arp);
 	me.add(arp);
+
+	// cron4j 定时器插件
+	Cron4jPlugin cp = new Cron4jPlugin("cron4j.ini", "TODO");
+	me.add(cp);
     }
 
     public static DruidPlugin createDruidPlugin() {

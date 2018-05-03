@@ -160,8 +160,8 @@ layui.use(['form','element','layer','jquery'],function(){
 	    
 	    //init
 	    getPieData();
-	    //loadData per 1 mins
-	    setInterval(getPieData, 1000 * 60);
+	    //loadData per 5 mins
+	    setInterval(getPieData, 1000 * 60 * 5);
 		
 		
 }); // layui range end

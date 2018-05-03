@@ -82,7 +82,7 @@ public class IssueRecordService {
 	    }
 	}else{//归还
 	    try {
-		clearRecord(uCode, costunit, workplace, toolID);
+		returnRecord(uCode, costunit, workplace, toolID);
 	    } catch (Exception e) {
 		log.error("刀具["+toolID+"]更新领取记录状态失败！", e);
 		return "失败原因：服务器内部错误，更新领取记录状态失败！";
@@ -143,7 +143,7 @@ public class IssueRecordService {
 	
     }
     
-    private void clearRecord(String uCode, String costunit, String workplace, String toolID) throws Exception{
+    private void returnRecord(String uCode, String costunit, String workplace, String toolID) throws Exception{
 	IssueRecord iRecord = dao.findFirst("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND COSTUNIT=? AND WORKPLACE=? AND TOOLID=? ");
 	iRecord.setSTATE((short) 1).update();
     }
@@ -270,6 +270,13 @@ public class IssueRecordService {
      */
     public IssueRecord findById(int issueRecordId) {
 	return dao.findFirst("select * from TCA_ISSUE_RECORD where id=?", issueRecordId);
+    }
+    
+    /**
+     * 查询列表
+     */
+    public List<IssueRecord> findListByState(int state) {
+	return dao.find("SELECT * FROM TCA_ISSUE_RECORD WHERE STATE=? ", state);
     }
 
     /**
