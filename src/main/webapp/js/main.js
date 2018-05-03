@@ -135,22 +135,20 @@ layui.use(['form','element','layer','jquery'],function(){
 	            data: {},
 	            dataType: "json",
 	            success: function(data){
+	            	userPie.setOption({
+	            		legend: {
+	            			data: data.userLegend,
+	            		},
+	            		series: [{
+	            			data: data.userData
+	            		}]
+	            	});
 	            	devicePie.setOption({
 	            		legend: {
 	            	        data: data.deviceLegend,
-	            	        //selected: data.deviceLegendSelected
 	            	    },
 	            	    series: [{
 	                        data: data.deviceData
-	                    }]
-	            	});
-	            	userPie.setOption({
-	            		legend: {
-	            	        data: data.userLegend,
-	            	        //selected: data.deviceLegendSelected
-	            	    },
-	            	    series: [{
-	                        data: data.userData
 	                    }]
 	            	});
 	            }
@@ -158,7 +156,7 @@ layui.use(['form','element','layer','jquery'],function(){
 	    	return data;
 	    };
 	    
-	    //init
+	    //init data
 	    getPieData();
 	    //loadData per 5 mins
 	    setInterval(getPieData, 1000 * 60 * 5);

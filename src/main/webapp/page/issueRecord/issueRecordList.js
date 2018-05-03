@@ -9,7 +9,8 @@ layui.use(['form','layer','table','laytpl'],function(){
     var tableIns = table.render({
     	id : "dataListTable",
         elem: '#dataList',
-        url : '/issueRecord/list',
+        url : '/issueRecord/listWithFilter',
+        where : {},
         cellMinWidth : 95,
         page : true,
         height : "full-250",

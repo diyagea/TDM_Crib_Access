@@ -2,10 +2,7 @@ package com.TCA.controller;
 
 import java.util.HashMap;
 
-import com.TCA.common.model.IssueRecord;
 import com.TCA.service.IssueRecordService;
-import com.TCA.validator.IssueRecordValidator;
-import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -27,29 +24,24 @@ public class IssueRecordController extends Controller {
 	renderJson(srv.getPieData());
     }
     
-    public void doIssue(){
-	
-    }
-
     /**
-     * 查询列表
+     * 执行TDM领取操作
+     * params: url~issueRecord/doIssue/costunit & workplace & uCode & toolID & toolType & count & issueState
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void list() {
-	int page = getParaToInt("page");
-	int limit = getParaToInt("limit");
-	Page p = srv.paginate(page, limit);
-	HashMap m = new HashMap();
-	m.put("code", 0);
-	m.put("msg", "");
-	m.put("count", p.getTotalRow());
-	m.put("data", p.getList());
+    public void doIssue(){
+	String costunit = getPara(0);
+	String workplace = getPara(1);
+	String uCode = getPara(2);
+	String toolID = getPara(3);
+	int toolType = getParaToInt(4);
+	int count = getParaToInt(5);
+	int issueState = getParaToInt(6);
 
-	renderJson(m);
+	renderJson(srv.doIssue(costunit, workplace, uCode, toolID, toolType, count, issueState));
     }
     
     /**
-     * 查询列表（条件）
+     * 查询列表（条件筛选）
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void listWithFilter() {
@@ -71,64 +63,6 @@ public class IssueRecordController extends Controller {
 
 	
 	renderJson(m);
-    }
-
-    public void add() {
-	render("issueRecordAdd.html");
-    }
-
-    /**
-     * 保存实体
-     */
-    @Before({ IssueRecordValidator.class })
-    public void save() {
-	// get model from web view
-	IssueRecord issueRecord = getModel(IssueRecord.class);
-
-	// call service method
-	boolean result = srv.save(issueRecord);
-
-	// return result
-	// renderJson("isOk", result);
-	redirect("/issueRecord");
-    }
-
-    /**
-     * 更新跳转
-     */
-    public void edit() {
-	IssueRecord issueRecord = srv.findById(getParaToInt());
-	setAttr("issueRecord", issueRecord);
-	// 修改跳转
-	render("issueRecordEdit.html");
-    }
-
-    /**
-     * 更新
-     */
-    @Before(IssueRecordValidator.class)
-    public void update() {
-	srv.update(getModel(IssueRecord.class));
-	// renderJson("isOk", true);
-	redirect("/issueRecord");
-    }
-
-    /**
-     * 查询实体详情
-     */
-    public void view() {
-	IssueRecord issueRecord = srv.findById(getParaToInt());
-	setAttr("issueRecord", issueRecord);
-	render("issueRecordView.html");
-    }
-
-    /**
-     * 删除
-     */
-    public void delete() {
-	srv.delete(getParaToInt());
-	// renderJson("isOk", true);
-	redirect("/issueRecord");
     }
 
 }

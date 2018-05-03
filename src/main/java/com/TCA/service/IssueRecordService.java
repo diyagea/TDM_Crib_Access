@@ -36,7 +36,7 @@ public class IssueRecordService {
     static LimitDeviceToolService lDeviceSrv = LimitDeviceToolService.me;
     static LimitTimeToolService lTimeSrv = LimitTimeToolService.me;
     
-    public String issueCheck(String costunit, String workplace, String uCode, String toolID, int toolType, int count, int issueState){
+    public String doIssue(String costunit, String workplace, String uCode, String toolID, int toolType, int count, int issueState){
 	//limit check
 	//1 check IssueUser State
 	IssueUser u = userSrv.findByUCode(uCode);
@@ -144,7 +144,7 @@ public class IssueRecordService {
     }
     
     private void returnRecord(String uCode, String costunit, String workplace, String toolID) throws Exception{
-	IssueRecord iRecord = dao.findFirst("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND COSTUNIT=? AND WORKPLACE=? AND TOOLID=? ");
+	IssueRecord iRecord = dao.findFirst("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND COSTUNIT=? AND WORKPLACE=? AND TOOLID=? AND STATE=0 ");
 	iRecord.setSTATE((short) 1).update();
     }
     
@@ -188,10 +188,8 @@ public class IssueRecordService {
 	}
 	
 	returnData.put("userLegend", userLegend);
-	//returnData.put("userLegendSelected", userLegend.subList(0, 9));
 	returnData.put("userData", userData);
 	returnData.put("deviceLegend", deviceLegend);
-	//returnData.put("deviceLegendSelected", deviceLegend.subList(0, 9));
 	returnData.put("deviceData", deviceData);
 	
 	return returnData;
@@ -246,23 +244,7 @@ public class IssueRecordService {
 	    condStr = "";
 	}
 	
-	return dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_ISSUE_RECORD " + condStr);
-    }
-
-    /**
-     * 保存
-     */
-    public boolean save(IssueRecord issueRecord) {
-	issueRecord.remove("ID");
-	boolean result = issueRecord.save();
-	return result;
-    }
-
-    /**
-     * 更新
-     */
-    public void update(IssueRecord issueRecord) {
-	issueRecord.update();
+	return dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_ISSUE_RECORD " + condStr + " ORDER BY ISSUETIME DESC");
     }
 
     /**
@@ -279,11 +261,5 @@ public class IssueRecordService {
 	return dao.find("SELECT * FROM TCA_ISSUE_RECORD WHERE STATE=? ", state);
     }
 
-    /**
-     * 删除
-     */
-    public void delete(int issueRecordId) {
-	Db.update("delete from TCA_ISSUE_RECORD where id=?", issueRecordId);
-    }
 
 }
