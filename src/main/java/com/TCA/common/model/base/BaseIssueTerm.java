@@ -18,22 +18,22 @@ public abstract class BaseIssueTerm<M extends BaseIssueTerm<M>> extends Model<M>
 		return getStr("TOOLID");
 	}
 
-	public M setTYPE(java.lang.Short TYPE) {
+	public M setTYPE(java.lang.Integer TYPE) {
 		set("TYPE", TYPE);
 		return (M)this;
 	}
 
-	public java.lang.Short getTYPE() {
-		return getShort("TYPE");
+	public java.lang.Integer getTYPE() {
+		return getInt("TYPE");
 	}
 
-	public M setSTATE(java.lang.Short STATE) {
+	public M setSTATE(java.lang.Integer STATE) {
 		set("STATE", STATE);
 		return (M)this;
 	}
 
-	public java.lang.Short getSTATE() {
-		return getShort("STATE");
+	public java.lang.Integer getSTATE() {
+		return getInt("STATE");
 	}
 
 	public M setTIMEVAL(java.lang.Integer TIMEVAL) {
@@ -45,13 +45,13 @@ public abstract class BaseIssueTerm<M extends BaseIssueTerm<M>> extends Model<M>
 		return getInt("TIMEVAL");
 	}
 
-	public M setTIMETYPE(java.lang.Short TIMETYPE) {
+	public M setTIMETYPE(java.lang.Integer TIMETYPE) {
 		set("TIMETYPE", TIMETYPE);
 		return (M)this;
 	}
 
-	public java.lang.Short getTIMETYPE() {
-		return getShort("TIMETYPE");
+	public java.lang.Integer getTIMETYPE() {
+		return getInt("TIMETYPE");
 	}
 
 	public M setNOTE(java.lang.String NOTE) {

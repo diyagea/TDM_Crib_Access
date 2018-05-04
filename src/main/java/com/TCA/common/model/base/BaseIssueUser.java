@@ -27,15 +27,6 @@ public abstract class BaseIssueUser<M extends BaseIssueUser<M>> extends Model<M>
 		return getStr("NAME");
 	}
 
-	public M setSTATE(java.lang.Short STATE) {
-		set("STATE", STATE);
-		return (M)this;
-	}
-
-	public java.lang.Short getSTATE() {
-		return getShort("STATE");
-	}
-
 	public M setDEPT(java.lang.String DEPT) {
 		set("DEPT", DEPT);
 		return (M)this;
@@ -43,6 +34,15 @@ public abstract class BaseIssueUser<M extends BaseIssueUser<M>> extends Model<M>
 
 	public java.lang.String getDEPT() {
 		return getStr("DEPT");
+	}
+
+	public M setSTATE(java.lang.Integer STATE) {
+		set("STATE", STATE);
+		return (M)this;
+	}
+
+	public java.lang.Integer getSTATE() {
+		return getInt("STATE");
 	}
 
 	public M setNOTE(java.lang.String NOTE) {

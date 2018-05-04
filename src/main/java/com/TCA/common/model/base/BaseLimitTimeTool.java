@@ -54,22 +54,22 @@ public abstract class BaseLimitTimeTool<M extends BaseLimitTimeTool<M>> extends 
 		return getInt("COUNT");
 	}
 
-	public M setTYPE(java.lang.Short TYPE) {
+	public M setTYPE(java.lang.Integer TYPE) {
 		set("TYPE", TYPE);
 		return (M)this;
 	}
 
-	public java.lang.Short getTYPE() {
-		return getShort("TYPE");
+	public java.lang.Integer getTYPE() {
+		return getInt("TYPE");
 	}
 
-	public M setSTATE(java.lang.Short STATE) {
+	public M setSTATE(java.lang.Integer STATE) {
 		set("STATE", STATE);
 		return (M)this;
 	}
 
-	public java.lang.Short getSTATE() {
-		return getShort("STATE");
+	public java.lang.Integer getSTATE() {
+		return getInt("STATE");
 	}
 
 	public M setNOTE(java.lang.String NOTE) {

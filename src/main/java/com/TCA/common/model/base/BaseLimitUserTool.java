@@ -9,15 +9,12 @@ import com.jfinal.plugin.activerecord.IBean;
  */
 @SuppressWarnings({"serial", "unchecked"})
 public abstract class BaseLimitUserTool<M extends BaseLimitUserTool<M>> extends Model<M> implements IBean {
-    	
-    	String USERNAME = "";
-    
+
+    	//新增方法
     	public String getUSERNAME(){
-    	    USERNAME = IssueUser.dao.findById(getUSERCODE()).getNAME();
-    	    return USERNAME;
+    	    return IssueUser.dao.findById(getUSERCODE()).getNAME();
     	}
-    
-    
+    	//===================
 	public M setID(java.lang.Integer ID) {
 		set("ID", ID);
 		return (M)this;
@@ -45,22 +42,22 @@ public abstract class BaseLimitUserTool<M extends BaseLimitUserTool<M>> extends 
 		return getStr("TOOLID");
 	}
 
-	public M setTYPE(java.lang.Short TYPE) {
+	public M setTYPE(java.lang.Integer TYPE) {
 		set("TYPE", TYPE);
 		return (M)this;
 	}
 
-	public java.lang.Short getTYPE() {
-		return getShort("TYPE");
+	public java.lang.Integer getTYPE() {
+		return getInt("TYPE");
 	}
 
-	public M setSTATE(java.lang.Short STATE) {
+	public M setSTATE(java.lang.Integer STATE) {
 		set("STATE", STATE);
 		return (M)this;
 	}
 
-	public java.lang.Short getSTATE() {
-		return getShort("STATE");
+	public java.lang.Integer getSTATE() {
+		return getInt("STATE");
 	}
 
 	public M setCOUNT(java.lang.Integer COUNT) {

@@ -17,7 +17,8 @@ import com.jfinal.plugin.druid.DruidPlugin;
  * 在数据库表有任何变动时，运行一下 main 方法，极速响应变化进行代码重构
  */
 public class _JFinalDemoGenerator {
-
+    
+    	// 添加不需要生成的表名
 	public static String[] excludedTable = { "adv", "trace_xe_action_map", "trace_xe_event_map" };
 
 	// base model 所使用的包名
