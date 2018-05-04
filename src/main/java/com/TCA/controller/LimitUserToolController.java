@@ -35,10 +35,10 @@ public class LimitUserToolController extends Controller {
 	m.put("count", p.getTotalRow());
 	m.put("data", p.getList());
 	
-	for(Object o : p.getList()){
+	//TODO show user name in LimitUserTool table
+	/*for(Object o : p.getList()){
 	    
-	    System.out.println(((LimitUserTool)o).getUSERNAME());
-	}
+	}*/
 
 	renderJson(m);
     }

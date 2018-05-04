@@ -131,7 +131,6 @@ public class JfGenerator {
     
     /**
      * 生成数据库表
-     * TODO tableMeta待完成..
      */
     public JfGenerator tableMeta(List<TableMeta> tableMetas){
         return this;

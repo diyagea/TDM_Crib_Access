@@ -81,6 +81,15 @@ public abstract class BaseIssueRecord<M extends BaseIssueRecord<M>> extends Mode
 		return getInt("COUNT");
 	}
 
+	public M setCOUNTBACK(java.lang.Integer COUNTBACK) {
+		set("COUNTBACK", COUNTBACK);
+		return (M)this;
+	}
+
+	public java.lang.Integer getCOUNTBACK() {
+		return getInt("COUNTBACK");
+	}
+
 	public M setISSUETIME(java.lang.String ISSUETIME) {
 		set("ISSUETIME", ISSUETIME);
 		return (M)this;

@@ -1,7 +1,6 @@
 package com.TCA.common.model.base;
 
 import com.jfinal.plugin.activerecord.Model;
-import com.TCA.common.model.IssueUser;
 import com.jfinal.plugin.activerecord.IBean;
 
 /**
@@ -10,11 +9,6 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings({"serial", "unchecked"})
 public abstract class BaseLimitUserTool<M extends BaseLimitUserTool<M>> extends Model<M> implements IBean {
 
-    	//新增方法
-    	public String getUSERNAME(){
-    	    return IssueUser.dao.findById(getUSERCODE()).getNAME();
-    	}
-    	//===================
 	public M setID(java.lang.Integer ID) {
 		set("ID", ID);
 		return (M)this;

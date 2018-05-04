@@ -36,8 +36,8 @@ public class IssueRecordService {
     static LimitDeviceToolService lDeviceSrv = LimitDeviceToolService.me;
     static LimitTimeToolService lTimeSrv = LimitTimeToolService.me;
     
-    public String doIssue(String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo, String uCode, String toolID, int toolType, int count, int issueState){
-	//limit check
+    public String doIssue(String uCode, String toolID, int toolType, int count, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo){
+	/*limit check*/
 	//1 check IssueUser State
 	IssueUser u = userSrv.findByUCode(uCode);
 	if(u == null || u.getSTATE()==0){//不存在或禁用
@@ -50,7 +50,6 @@ public class IssueRecordService {
 		return "失败原因：该用户被禁止领取此刀具["+toolID+"]!";
 	    }else if(lUser.getCOUNT() > 0 && count > lUser.getCOUNT()){
 		return "失败原因：领取数量已超过最大限制数量[条件：用户限制，数量："+lUser.getCOUNT()+"]";
-		
 	    }
 	}
 	//3 check Device-Tool limit
@@ -63,9 +62,8 @@ public class IssueRecordService {
 	    }
 	}
 	//4 check Time-Tool limit
-	String time = DateKit.toStr(new Date(), "hh:mm:ss");
-	
-	LimitTimeTool lTime = lTimeSrv.find(time, toolID, toolType);
+	String nowTime = DateKit.toStr(new Date(), "hh:mm:ss");
+	LimitTimeTool lTime = lTimeSrv.find(nowTime, toolID, toolType);
 	if(lTime != null && lTime.getSTATE() == 1){//存在并启用
 	    if(lTime.getCOUNT() == 0){//限制数量为0
 		return "失败原因：当前时间被禁止领取此刀具["+toolID+"]";
@@ -74,27 +72,41 @@ public class IssueRecordService {
 	    }
 	}
 	//add issue record / clear record state
-	if(issueState == 0){//领取
+	//check issueType (issue out/return)
+	if(checkIssueType(uCode, toolID, toolType, costunitFrom, workplaceFrom, costunitTo, workplaceTo)){//领取
 	    try {
-		addRecord(uCode, costunitFrom, workplaceFrom, costunitTo, workplaceTo, toolID, count);
+		newRecord(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo);
 	    } catch (Exception e) {
 		log.error("刀具["+toolID+"]添加领取记录失败！", e);
 		return "失败原因：服务器内部错误，添加领取记录失败！";
 	    }
 	}else{//归还
 	    try {
-		//TODO returnRecord(uCode, costunitFrom, workplaceFrom, toolID);
+		returnRecord(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo);
 	    } catch (Exception e) {
-		log.error("刀具["+toolID+"]更新领取记录状态失败！", e);
-		return "失败原因：服务器内部错误，更新领取记录状态失败！";
+		log.error("刀具["+toolID+"]更新返还领取记录失败！", e);
+		return "失败原因：服务器内部错误，更新返还领取记录失败！";
 	    }
 	}
 	return "TRUE";
     }
     
-    private void addRecord(String uCode, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo, String toolID, int count) throws Exception{
+    //判断领取类型
+    private boolean checkIssueType(String uCode, String toolID, int toolType, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo){
+	//check row count 
+	Record r = Db.findFirst("SELECT COUNT(1) ROWCOUNT, COUNT FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND TOOLID=? AND TYPE=? AND COSTUNITFROM=? AND WORKPLACEFROM=? AND COSTUNITTO=? AND WORKPLACETO=? AND STATE=0 ", costunitTo, workplaceFrom, costunitFrom, workplaceTo, uCode, toolID, toolType);
+	boolean result = false;
+	int rowCount = r.getInt("ROWCOUNT");
+	if(rowCount == 0){//no row = new issue out 
+	    result = true;
+	}	
+	return result;
+    }
+    
+    //新增领取记录
+    private void newRecord(String uCode, String toolID, int toolType, int count, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo) throws Exception{
+	//init model
 	IssueRecord iRecord = new IssueRecord();
-	//init
 	iRecord.setUSERCODE(uCode);
 	iRecord.setCOSTUNITFROM(costunitFrom);
 	iRecord.setWORKPLACEFROM(workplaceFrom);
@@ -104,9 +116,10 @@ public class IssueRecordService {
 	iRecord.setSTATE(0);
 	iRecord.setCOUNT(count);
 	
-	//count date time and term
+	//查询刀具时间期限
 	IssueTerm issueTerm = termSrv.findByToolID(toolID);
 	
+	//计算时间期限毫秒
 	long timeTerm = 0;
 	if(issueTerm != null){
 	    int timeVal = issueTerm.getTIMEVAL();
@@ -146,10 +159,29 @@ public class IssueRecordService {
 	
     }
     
-    //TODO
-    private void returnRecord(String uCode, String costunit, String workplace, String toolID) throws Exception{
-	IssueRecord iRecord = dao.findFirst("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND COSTUNITTO=? AND WORKPLACE=? AND TOOLID=? AND STATE=0 ");
-	iRecord.setSTATE(1).update();
+    //返还刀具
+    private void returnRecord(String uCode, String toolID, int toolType, int countBack, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo) throws Exception{
+	List<IssueRecord> records = dao.find("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND TOOLID=? AND TYPE=? AND COUNT=? AND COSTUNITFROM=? AND WORKPLACEFROM=? AND COSTUNITTO=? AND WORKPLACETO=? AND STATE=0 ", uCode, toolID, toolType, countBack, costunitFrom, workplaceFrom, costunitTo, workplaceTo);
+	for(IssueRecord r : records){
+	    //剩余为归还数量=借出数量-已归还数量
+	    int countOut = r.getCOUNT() - r.getCOUNTBACK();
+	    if(countBack < countOut){//返还数量小于（剩余）未归还数量
+		r.setCOUNTBACK(countBack + r.getCOUNTBACK());
+		r.update();
+		break;//当前归还流程结束
+	    }else if(countBack == countOut){//返还数量等于（剩余）未归还数量
+		r.setCOUNTBACK(countBack + r.getCOUNTBACK());
+		r.setSTATE(1);//此记录已还清
+		r.update();
+		break;//当前归还流程结束
+	    }else if(countBack > countOut){//返还数量大于（剩余）未归还数量
+		r.setCOUNTBACK(countOut + r.getCOUNTBACK());//归还数量 = 此记录总借出数量
+		r.setSTATE(1);//此记录已还清
+		countBack = countBack - countOut;
+		r.update();
+		continue;//未还清，继续归还流程
+	    }
+	}
     }
     
     

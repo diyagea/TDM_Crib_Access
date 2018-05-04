@@ -18,15 +18,15 @@ public class IssueRecordController extends Controller {
     static IssueRecordService srv = IssueRecordService.me;
 
     /**
-     * pieData
+     * main page - pie chart data
      */
     public void pieData() {
 	renderJson(srv.getPieData());
     }
     
     /**
-     * 执行TDM领取操作
-     * params: url~issueRecord/doIssue/costunit & workplace & uCode & toolID & toolType & count & issueState
+     * TDM执行领取操作接口，权限检查
+     * params: url~issueRecord/doIssue/costunit & workplace & uCode & toolID & toolType & count
      */
     public void doIssue(){
 	String costunitFrom = getPara(0);
@@ -37,13 +37,12 @@ public class IssueRecordController extends Controller {
 	String toolID = getPara(5);
 	int toolType = getParaToInt(6);
 	int count = getParaToInt(7);
-	int issueState = getParaToInt(8);
 
-	renderJson(srv.doIssue(costunitFrom, workplaceFrom, costunitTo, workplaceTo, uCode, toolID, toolType, count, issueState));
+	renderJson(srv.doIssue(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo));
     }
     
     /**
-     * 查询列表（条件筛选）
+     * 查询领取记录列表（条件筛选）
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public void listWithFilter() {
@@ -62,7 +61,6 @@ public class IssueRecordController extends Controller {
 	m.put("msg", "");
 	m.put("count", p.getTotalRow());
 	m.put("data", p.getList());
-
 	
 	renderJson(m);
     }

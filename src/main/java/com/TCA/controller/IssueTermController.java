@@ -44,40 +44,12 @@ public class IssueTermController extends Controller {
     }
 
     /**
-     * 准备添加
-     */
-    public void add() {
-	
-	// query tool id list from TDM database TODO
-	// query tool id from exist table
-	// remove Multiply id
-	// return to view page
-	
-	String[] toolIDList = { "001", "002", "003" };
-	setAttr("toolIDList", toolIDList);
-	render("issueTermAdd.html");
-    }
-
-    /**
      * 保存
      */
     @Before({ IssueTermValidator.class })
     public void save() {
 	boolean result = srv.save(getModel(IssueTerm.class));
 	renderJson("isOk", result);
-    }
-
-    /**
-     * 准备更新
-     */
-    public void edit() {
-	//TODO same to save step
-	String[] toolIDList = { "001", "002", "003" };
-	setAttr("toolIDList", toolIDList);
-	
-	//IssueTerm issueTerm = srv.findById(getParaToInt());
-	//setAttr("issueTerm", issueTerm);
-	render("issueTermAdd.html");
     }
 
     /**
