@@ -36,7 +36,7 @@ public class IssueRecordService {
     static LimitDeviceToolService lDeviceSrv = LimitDeviceToolService.me;
     static LimitTimeToolService lTimeSrv = LimitTimeToolService.me;
     
-    public String doIssue(String costunit, String workplace, String uCode, String toolID, int toolType, int count, int issueState){
+    public String doIssue(String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo, String uCode, String toolID, int toolType, int count, int issueState){
 	//limit check
 	//1 check IssueUser State
 	IssueUser u = userSrv.findByUCode(uCode);
@@ -54,7 +54,7 @@ public class IssueRecordService {
 	    }
 	}
 	//3 check Device-Tool limit
-	LimitDeviceTool lDevice = lDeviceSrv.find(costunit, workplace, toolID, toolType);
+	LimitDeviceTool lDevice = lDeviceSrv.find(costunitTo, workplaceTo, toolID, toolType);
 	if(lDevice != null && lDevice.getSTATE() == 1){//存在并启用
 	    if(lDevice.getCOUNT() == 0){//限制数量为0
 		return "失败原因：该设备被禁止领取此刀具["+toolID+"]";
@@ -63,7 +63,8 @@ public class IssueRecordService {
 	    }
 	}
 	//4 check Time-Tool limit
-	String time = "";
+	String time = DateKit.toStr(new Date(), "hh:mm:ss");
+	
 	LimitTimeTool lTime = lTimeSrv.find(time, toolID, toolType);
 	if(lTime != null && lTime.getSTATE() == 1){//存在并启用
 	    if(lTime.getCOUNT() == 0){//限制数量为0
@@ -75,14 +76,14 @@ public class IssueRecordService {
 	//add issue record / clear record state
 	if(issueState == 0){//领取
 	    try {
-		addRecord(uCode, costunit, workplace, toolID, count);
+		addRecord(uCode, costunitFrom, workplaceFrom, costunitTo, workplaceTo, toolID, count);
 	    } catch (Exception e) {
 		log.error("刀具["+toolID+"]添加领取记录失败！", e);
 		return "失败原因：服务器内部错误，添加领取记录失败！";
 	    }
 	}else{//归还
 	    try {
-		returnRecord(uCode, costunit, workplace, toolID);
+		//TODO returnRecord(uCode, costunitFrom, workplaceFrom, toolID);
 	    } catch (Exception e) {
 		log.error("刀具["+toolID+"]更新领取记录状态失败！", e);
 		return "失败原因：服务器内部错误，更新领取记录状态失败！";
@@ -91,14 +92,16 @@ public class IssueRecordService {
 	return "TRUE";
     }
     
-    private void addRecord(String uCode, String costunit, String workplace, String toolID, int count) throws Exception{
+    private void addRecord(String uCode, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo, String toolID, int count) throws Exception{
 	IssueRecord iRecord = new IssueRecord();
 	//init
 	iRecord.setUSERCODE(uCode);
-	iRecord.setCOSTUNIT(costunit);
-	iRecord.setWORKPLACE(workplace);
+	iRecord.setCOSTUNITFROM(costunitFrom);
+	iRecord.setWORKPLACEFROM(workplaceFrom);
+	iRecord.setCOSTUNITTO(costunitTo);
+	iRecord.setWORKPLACETO(workplaceTo);
 	iRecord.setTOOLID(toolID);
-	iRecord.setSTATE((short) 0);
+	iRecord.setSTATE(0);
 	iRecord.setCOUNT(count);
 	
 	//count date time and term
@@ -143,9 +146,10 @@ public class IssueRecordService {
 	
     }
     
+    //TODO
     private void returnRecord(String uCode, String costunit, String workplace, String toolID) throws Exception{
-	IssueRecord iRecord = dao.findFirst("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND COSTUNIT=? AND WORKPLACE=? AND TOOLID=? AND STATE=0 ");
-	iRecord.setSTATE((short) 1).update();
+	IssueRecord iRecord = dao.findFirst("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND COSTUNITTO=? AND WORKPLACE=? AND TOOLID=? AND STATE=0 ");
+	iRecord.setSTATE(1).update();
     }
     
     
@@ -159,7 +163,7 @@ public class IssueRecordService {
     public Kv getPieData(){
 	
 	List<Record> userRecord = Db.find("SELECT R.USERCODE, U.NAME, SUM(COUNT) TOOLCOUNT FROM TCA_ISSUE_RECORD R  INNER JOIN TCA_ISSUE_USER U ON U.USERCODE=R.USERCODE AND R.STATE<>0 GROUP BY R.USERCODE, U.NAME ");
-	List<Record> deviceRecord = Db.find("SELECT COSTUNIT, SUM(COUNT)TOOLCOUNT FROM (SELECT * FROM TCA_ISSUE_RECORD WHERE STATE != 0) TCA_ISSUE_RECORD GROUP BY COSTUNIT ");
+	List<Record> deviceRecord = Db.find("SELECT COSTUNITTO, SUM(COUNT)TOOLCOUNT FROM (SELECT * FROM TCA_ISSUE_RECORD WHERE STATE != 0) TCA_ISSUE_RECORD GROUP BY COSTUNITTO ");
 	
 	List<String> userLegend = new ArrayList<String>();
 	List<String> deviceLegend = new ArrayList<String>();
@@ -179,10 +183,10 @@ public class IssueRecordService {
 
 	//deviceData
 	for(Record r : deviceRecord){
-	    deviceLegend.add(r.getStr("COSTUNIT"));
+	    deviceLegend.add(r.getStr("COSTUNITTO"));
 	    
 	    Kv temp = new Kv();
-	    temp.put("name", r.getStr("COSTUNIT"));
+	    temp.put("name", r.getStr("COSTUNITTO"));
 	    temp.put("value", r.getStr("TOOLCOUNT"));
 	    deviceData.add(temp);
 	}
@@ -215,9 +219,9 @@ public class IssueRecordService {
 	}
 	if (StrKit.notBlank(costunit)) {
 	    if(condFlag){
-		condStr += " AND COSTUNIT = " + costunit;
+		condStr += " AND COSTUNITTO = " + costunit;
 	    }else{
-		condStr += " COSTUNIT = " + costunit;
+		condStr += " COSTUNITTO = " + costunit;
 		condFlag = true;
 	    }
 	}

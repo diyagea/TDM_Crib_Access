@@ -29,15 +29,17 @@ public class IssueRecordController extends Controller {
      * params: url~issueRecord/doIssue/costunit & workplace & uCode & toolID & toolType & count & issueState
      */
     public void doIssue(){
-	String costunit = getPara(0);
-	String workplace = getPara(1);
-	String uCode = getPara(2);
-	String toolID = getPara(3);
-	int toolType = getParaToInt(4);
-	int count = getParaToInt(5);
-	int issueState = getParaToInt(6);
+	String costunitFrom = getPara(0);
+	String workplaceFrom = getPara(1);
+	String costunitTo = getPara(2);
+	String workplaceTo = getPara(3);
+	String uCode = getPara(4);
+	String toolID = getPara(5);
+	int toolType = getParaToInt(6);
+	int count = getParaToInt(7);
+	int issueState = getParaToInt(8);
 
-	renderJson(srv.doIssue(costunit, workplace, uCode, toolID, toolType, count, issueState));
+	renderJson(srv.doIssue(costunitFrom, workplaceFrom, costunitTo, workplaceTo, uCode, toolID, toolType, count, issueState));
     }
     
     /**
@@ -50,11 +52,11 @@ public class IssueRecordController extends Controller {
 	
 	//filter
 	String toolID = getPara("TOOLID");
-	String costunit = getPara("COSTUNIT");
+	String costunitTo = getPara("COSTUNITTO");
 	String userCode = getPara("USERCODE");
 	String state = getPara("STATE");
 	
-	Page p = srv.paginate(page, limit, toolID, costunit, userCode, state);
+	Page p = srv.paginate(page, limit, toolID, costunitTo, userCode, state);
 	HashMap m = new HashMap();
 	m.put("code", 0);
 	m.put("msg", "");

@@ -20,8 +20,10 @@ layui.use(['form','layer','table','laytpl'],function(){
             //{type: "checkbox", fixed:"left", width:50},
             {type:'numbers'},
             {field: 'USERCODE', title: '员工编号', minWidth:150, align:"center"},
-            {field: 'COSTUNIT', title: '成本单元', minWidth:150, align:"center"},
-            {field: 'WORKPLACE', title: '车间', minWidth:150, align:"center"},
+            {field: 'COSTUNITFROM', title: '成本单元FROM', minWidth:150, align:"center"},
+            {field: 'WORKPLACETO', title: '车间FROM', minWidth:150, align:"center"},
+            {field: 'COSTUNITTO', title: '成本单元TO', minWidth:150, align:"center"},
+            {field: 'WORKPLACETO', title: '车间TO', minWidth:150, align:"center"},
             {field: 'TOOLID', title: '刀具ID', minWidth:150, align:"center"},
             {field: 'TYPE', title: '刀具类别', width:100, align:"center", templet:function(d){
             	var title='组装刀具';
@@ -57,7 +59,7 @@ layui.use(['form','layer','table','laytpl'],function(){
     	table.reload('dataListTable', {
     		  url: '/issueRecord/listWithFilter',
     		  where: {
-    			  "COSTUNIT":data.field.costunit, 
+    			  "COSTUNITTO":data.field.costunit, 
     			  "USERCODE":data.field.userCode, 
     			  "TOOLID":data.field.toolID, 
     			  "STATE": state, 
