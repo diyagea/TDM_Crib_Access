@@ -19,11 +19,13 @@ layui.use(['form','layer','table','laytpl'],function(){
         cols : [[
             //{type: "checkbox", fixed:"left", width:50},
             {type:'numbers'},
-            {field: 'USERCODE', title: '员工编号', minWidth:150, align:"center"},
-            {field: 'COSTUNITFROM', title: '成本单元FROM', minWidth:150, align:"center"},
-            {field: 'WORKPLACETO', title: '车间FROM', minWidth:150, align:"center"},
-            {field: 'COSTUNITTO', title: '成本单元TO', minWidth:150, align:"center"},
-            {field: 'WORKPLACETO', title: '车间TO', minWidth:150, align:"center"},
+            {field: 'USERCODE', title: '员工编号', width:100, align:"center"},
+            {field: 'COSTUNITFROM', title: '（从）成本中心', minWidth:150, align:"center", templet:function(d){
+            	return d.COSTUNITFROM+" - "+d.WORKPLACEFROM;
+            }},
+            {field: 'COSTUNITTO', title: '（至）成本中心', minWidth:150, align:"center", templet:function(d){
+            	return d.COSTUNITTO+" - "+d.WORKPLACETO;
+            }},
             {field: 'TOOLID', title: '刀具ID', minWidth:150, align:"center"},
             {field: 'TYPE', title: '刀具类别', width:100, align:"center", templet:function(d){
             	var title='组装刀具';
@@ -33,19 +35,20 @@ layui.use(['form','layer','table','laytpl'],function(){
             	return title;
             }},
             {field: 'COUNT', title: '领取数量', width:100, align:"center"},
-            {field: 'ISSUETIME', title: '领取时间', width:150, align:'center'},
-            {field: 'DEADLINE', title: '到期时间', width:150, align:'center'},
+            {field: 'COUNTBACK', title: '归还数量', width:100, align:"center"},
             {field: 'STATE', title: '状态', width:100, unresize: true,  align:'center',templet:function(d){
             	var title;
             	if(d.STATE==0){
-            		title='<p class="layui-bg-green">已归还</p>';
-            	}else if(d.STATE==1){
             		title='<p class="layui-bg-orange">未归还</p>';
+            	}else if(d.STATE==1){
+            		title='<p class="layui-bg-green">已归还</p>';
             	}else{
             		title='<p class="layui-bg-red">已超时</p>';
             	}
             	return title;
             }},
+            {field: 'ISSUETIME', title: '领取时间', width:180, align:'center'},
+            {field: 'DEADLINE', title: '到期时间', width:180, align:'center'},
         ]]
     });
 

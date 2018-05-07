@@ -21,9 +21,9 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'TOOLID', title: '刀具ID', width:150, align:"center"},
             {field: 'TYPE', title: '刀具类别', width:120, align:"center", templet:function(d){
             	var title;
-            	if(d.TYPE==0){
+            	if(d.TYPE==1){
             		title='单项刀具';
-            	}else if(d.TYPE==1){
+            	}else if(d.TYPE==2){
             		title='组装刀具';
             	}
             	return title;

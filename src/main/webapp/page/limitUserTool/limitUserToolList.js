@@ -22,7 +22,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'TOOLID', title: '刀具ID', width:150, align:"center"},
             {field: 'TYPE', title: '刀具类别', width:120, align:"center", templet:function(d){
             	var title='组装刀具';
-            	if(d.TYPE==0){
+            	if(d.TYPE==1){
             		title='单项刀具';
             	}
             	return title;

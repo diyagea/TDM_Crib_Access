@@ -49,7 +49,7 @@ public class LimitDeviceToolService {
      */
     public boolean updateState(int ID, boolean s) {
 	int state = 0;
-	if(!s){
+	if(s){
 	    state = 1;
 	}
 	

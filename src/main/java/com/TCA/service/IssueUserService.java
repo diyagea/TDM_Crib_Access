@@ -53,7 +53,7 @@ public class IssueUserService {
      */
     public boolean updateState(String userCode, Boolean s) {
 	int state = 0;
-	if (!s) {
+	if (s) {//开关：true
 	    state = 1;
 	}
 	// return update sql result

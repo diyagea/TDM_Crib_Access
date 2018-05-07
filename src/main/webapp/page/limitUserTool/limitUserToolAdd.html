@@ -21,19 +21,12 @@
 		<label class="layui-form-label">刀具ID</label>
 		<div class="layui-input-block">
 			<input type="text" name="toolID" class="layui-input toolID" lay-verify="required" placeholder="请输入刀具ID">
-			<!-- <select name="toolID" class="toolID" lay-filter="toolID">
-				<option value="0">铣刀</option>
-				<option value="1">铣刀2</option>
-				<option value="22">车刀</option>
-				<option value="3">钻头</option>
-				<option value="4">玉米铣刀</option>
-			</select> -->
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">员工</label>
 		<div class="layui-input-block">
-			<input type="hidden" name="userCodeHide" class="layui-input userCodeHide" lay-verify="required" placeholder="请输入员工编号">
+			<input type="hidden" name="userCodeHide" class="layui-input userCodeHide" placeholder="请输入员工编号">
 			<select name="userCode" class="userCode" lay-filter="userCode" lay-verify="required"  lay-search="">
 			</select>
 		</div>
@@ -41,8 +34,8 @@
 	<div class="layui-form-item layui-row layui-col-xs12">
 		<label class="layui-form-label">刀具类型</label>
 		<div class="layui-input-block toolType">
-				<input type="radio" name="toolType" value="0" title="单项刀具" checked>
-				<input type="radio" name="toolType" value="1" title="组装刀具">
+				<input type="radio" name="toolType" value="1" title="单项刀具" checked>
+				<input type="radio" name="toolType" value="2" title="组装刀具">
 		</div>
 	</div>
 	<div class="layui-form-item layui-row layui-col-xs12">
@@ -55,8 +48,8 @@
 		<label class="layui-form-label">状态</label>
 		<div class="layui-input-block">
 			<select name="state" class="state" lay-filter="state">
-				<option value="0">正常</option>
-				<option value="1">禁用</option>
+				<option value="1">正常</option>
+				<option value="0">禁用</option>
 			</select>
 		</div>
 	</div>

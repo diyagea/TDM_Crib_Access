@@ -49,7 +49,7 @@ public class LimitUserToolService {
      */
     public boolean updateState(String ID, Boolean s){
 	int state = 0;
-	if(!s){
+	if(s){
 	    state = 1;
 	}
 	

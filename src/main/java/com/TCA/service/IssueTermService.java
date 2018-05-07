@@ -48,7 +48,7 @@ public class IssueTermService {
      */
     public boolean updateState(String key, Boolean s) {
 	int state = 0;
-	if (!s) {
+	if (s) {
 	    state = 1;
 	}
 	// return update sql result

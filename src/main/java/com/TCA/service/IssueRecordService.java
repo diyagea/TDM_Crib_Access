@@ -62,7 +62,7 @@ public class IssueRecordService {
 	    }
 	}
 	//4 check Time-Tool limit
-	String nowTime = DateKit.toStr(new Date(), "hh:mm:ss");
+	String nowTime = DateKit.toStr(new Date(), "HH:mm:ss");
 	LimitTimeTool lTime = lTimeSrv.find(nowTime, toolID, toolType);
 	if(lTime != null && lTime.getSTATE() == 1){//存在并启用
 	    if(lTime.getCOUNT() == 0){//限制数量为0
@@ -91,12 +91,15 @@ public class IssueRecordService {
 	return "TRUE";
     }
     
-    //判断领取类型
+    /**
+     * 判断领取类型
+     * @return true=new issue, false=return
+     */
     private boolean checkIssueType(String uCode, String toolID, int toolType, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo){
 	//check row count 
-	Record r = Db.findFirst("SELECT COUNT(1) ROWCOUNT, COUNT FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND TOOLID=? AND TYPE=? AND COSTUNITFROM=? AND WORKPLACEFROM=? AND COSTUNITTO=? AND WORKPLACETO=? AND STATE=0 ", costunitTo, workplaceFrom, costunitFrom, workplaceTo, uCode, toolID, toolType);
+	Record r = Db.findFirst("SELECT COUNT(1) AS DATACOUNT FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND TOOLID=? AND TYPE=? AND COSTUNITFROM=? AND WORKPLACEFROM=? AND COSTUNITTO=? AND WORKPLACETO=? AND STATE=0 ", uCode, toolID, toolType, costunitTo, workplaceTo, costunitFrom, workplaceFrom);
 	boolean result = false;
-	int rowCount = r.getInt("ROWCOUNT");
+	int rowCount = r.getInt("DATACOUNT");
 	if(rowCount == 0){//no row = new issue out 
 	    result = true;
 	}	
@@ -113,8 +116,10 @@ public class IssueRecordService {
 	iRecord.setCOSTUNITTO(costunitTo);
 	iRecord.setWORKPLACETO(workplaceTo);
 	iRecord.setTOOLID(toolID);
+	iRecord.setTYPE(toolType);
 	iRecord.setSTATE(0);
 	iRecord.setCOUNT(count);
+	iRecord.setCOUNTBACK(0);
 	
 	//查询刀具时间期限
 	IssueTerm issueTerm = termSrv.findByToolID(toolID);
@@ -161,7 +166,7 @@ public class IssueRecordService {
     
     //返还刀具
     private void returnRecord(String uCode, String toolID, int toolType, int countBack, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo) throws Exception{
-	List<IssueRecord> records = dao.find("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND TOOLID=? AND TYPE=? AND COUNT=? AND COSTUNITFROM=? AND WORKPLACEFROM=? AND COSTUNITTO=? AND WORKPLACETO=? AND STATE=0 ", uCode, toolID, toolType, countBack, costunitFrom, workplaceFrom, costunitTo, workplaceTo);
+	List<IssueRecord> records = dao.find("SELECT * FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND TOOLID=? AND TYPE=? AND COSTUNITFROM=? AND WORKPLACEFROM=? AND COSTUNITTO=? AND WORKPLACETO=? AND STATE=0 ", uCode, toolID, toolType, costunitTo, workplaceTo, costunitFrom, workplaceFrom);
 	for(IssueRecord r : records){
 	    //剩余为归还数量=借出数量-已归还数量
 	    int countOut = r.getCOUNT() - r.getCOUNTBACK();
@@ -194,8 +199,8 @@ public class IssueRecordService {
     @SuppressWarnings("unchecked")
     public Kv getPieData(){
 	
-	List<Record> userRecord = Db.find("SELECT R.USERCODE, U.NAME, SUM(COUNT) TOOLCOUNT FROM TCA_ISSUE_RECORD R  INNER JOIN TCA_ISSUE_USER U ON U.USERCODE=R.USERCODE AND R.STATE<>0 GROUP BY R.USERCODE, U.NAME ");
-	List<Record> deviceRecord = Db.find("SELECT COSTUNITTO, SUM(COUNT)TOOLCOUNT FROM (SELECT * FROM TCA_ISSUE_RECORD WHERE STATE != 0) TCA_ISSUE_RECORD GROUP BY COSTUNITTO ");
+	List<Record> userRecord = Db.find("SELECT R.USERCODE, U.NAME, SUM(COUNT) TOOLCOUNT FROM TCA_ISSUE_RECORD R  INNER JOIN TCA_ISSUE_USER U ON U.USERCODE=R.USERCODE AND R.STATE<=0 GROUP BY R.USERCODE, U.NAME ");
+	List<Record> deviceRecord = Db.find("SELECT COSTUNITTO, SUM(COUNT)TOOLCOUNT FROM (SELECT * FROM TCA_ISSUE_RECORD WHERE STATE <= 0) TCA_ISSUE_RECORD GROUP BY COSTUNITTO ");
 	
 	List<String> userLegend = new ArrayList<String>();
 	List<String> deviceLegend = new ArrayList<String>();
@@ -243,27 +248,27 @@ public class IssueRecordService {
      */
     public Page<IssueRecord> paginate(int pageNumber, int pageSize, String toolID, String costunit, String userCode, String state) {
 	String condStr = "WHERE";
-	boolean condFlag = false;
+	boolean condFlag = false;//是否已添加条件
 	
 	if (StrKit.notBlank(toolID)) {
-	    condStr += " TOOLID = " + toolID;
+	    condStr += " TOOLID = '" + toolID + "' ";
 	    condFlag = true;
 	}
 	if (StrKit.notBlank(costunit)) {
 	    if(condFlag){
-		condStr += " AND COSTUNITTO = " + costunit;
+		condStr += " AND (COSTUNITTO = '" + costunit + "' OR COSTUNITFROM = '"+ costunit +"') ";
 	    }else{
-		condStr += " COSTUNITTO = " + costunit;
-		condFlag = true;
+		condStr += " (COSTUNITTO = '" + costunit + "' OR COSTUNITFROM = '"+ costunit +"') ";
 	    }
+	    condFlag = true;
 	}
 	if (StrKit.notBlank(userCode)) {
 	    if(condFlag){
-		condStr += " AND USERCODE = " + userCode;
+		condStr += " AND USERCODE = '" + userCode + "' ";
 	    }else{
-		condStr += " USERCODE = " + userCode;
-		condFlag = true;
+		condStr += " USERCODE = '" + userCode + "' ";
 	    }
+	    condFlag = true;
 	}
 	
 	if (StrKit.notBlank(state)) {//查询未归还

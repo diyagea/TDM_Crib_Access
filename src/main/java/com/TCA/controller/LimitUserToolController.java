@@ -48,7 +48,7 @@ public class LimitUserToolController extends Controller {
      * /demo/limitUserTool/add
      */
     public void addBefore() {
-	renderJson("userList", userSrv.listWithState(0));
+	renderJson("userList", userSrv.listWithState(1));
     }
 
     /**

@@ -26,7 +26,7 @@ public class IssueRecordController extends Controller {
     
     /**
      * TDM执行领取操作接口，权限检查
-     * params: url~issueRecord/doIssue/costunit & workplace & uCode & toolID & toolType & count
+     * params: url~issueRecord/doIssue/costunitFrom & workplaceFrom & costunitTo & workplaceTo & uCode & toolID & toolType & count
      */
     public void doIssue(){
 	String costunitFrom = getPara(0);
