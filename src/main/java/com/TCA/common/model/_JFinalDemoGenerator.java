@@ -2,7 +2,7 @@ package com.TCA.common.model;
 
 import javax.sql.DataSource;
 
-import com.TCA.common.DemoConfig;
+import com.TCA.common.StartConfig;
 import com.jfinal.kit.PathKit;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.dialect.Dialect;
@@ -34,7 +34,7 @@ public class _JFinalDemoGenerator {
 
 	public static DataSource getDataSource() {
 		PropKit.use("config.ini");
-		DruidPlugin druidPlugin = DemoConfig.createDruidPlugin();
+		DruidPlugin druidPlugin = StartConfig.createDruidPlugin();
 		druidPlugin.start();
 		return druidPlugin.getDataSource();
 	}

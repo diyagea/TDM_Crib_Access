@@ -23,12 +23,9 @@ import com.jfinal.plugin.druid.DruidPlugin;
 import com.jfinal.template.Engine;
 
 /**
- * 本 demo 仅表达最为粗浅的 jfinal 用法，更为有价值的实用的企业级用法
- * 详见 JFinal 俱乐部: http://jfinal.com/club
- * 
  * API引导式配置
  */
-public class DemoConfig extends JFinalConfig {
+public class StartConfig extends JFinalConfig {
 
     /**
      * 运行此 main 方法可以启动项目，此main方法可以放置在任意的Class类定义中，不一定要放于此
@@ -38,11 +35,7 @@ public class DemoConfig extends JFinalConfig {
      * -XX:PermSize=64M -XX:MaxPermSize=256M
      */
     public static void main(String[] args) {
-	/**
-	 * 特别注意：Eclipse 之下建议的启动方式
-	 */
-	JFinal.start("src/main/webapp", 8080, "/", 5);
-
+	JFinal.start("src/main/webapp", PropKit.use("config.ini").getInt("port"), "/", 5);
     }
 
     /**

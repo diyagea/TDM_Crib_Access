@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import com.TCA.common.DemoConfig;
+import com.TCA.common.StartConfig;
 import com.TCA.common.model._JFinalDemoGenerator;
 import com.jfinal.config.Constants;
 import com.jfinal.config.Plugins;
@@ -118,7 +118,7 @@ public class JfGenerator {
      * 生成数据库表
      */
     public JfGenerator tableSql(List<String> sqlList){
-        DemoConfig config       = new DemoConfig();
+        StartConfig config       = new StartConfig();
         Plugins plugins         = new Plugins();
         config.configConstant(new Constants());
         config.configPlugin(plugins);
