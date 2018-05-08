@@ -21,8 +21,8 @@ layui.use(['form','layer','table','laytpl'],function(){
             {field: 'USERCODE', title: '用户编号', width:150, align:"center"},
             {field: 'NAME', title: '姓名', width:120, align:"center"},
             {field: 'DEPT', title: '部门', minWidth:150, align:"center"},
-            {field: 'STATE', title: '用户状态',  align:'center',templet:'#stateSwitch', width:100, unresize: true},
             {field: 'NOTE', title: '备注', align:'center',minWidth:200},
+            {field: 'STATE', title: '用户状态',  align:'center',templet:'#stateSwitch', width:100, unresize: true},
             {title: '操作', width:150, templet:'#userListBar',fixed:"right",align:"center"}
         ]]
     });

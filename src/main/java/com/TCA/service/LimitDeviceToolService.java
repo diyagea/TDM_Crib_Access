@@ -29,8 +29,17 @@ public class LimitDeviceToolService {
     public boolean save(LimitDeviceTool limitDeviceTool) {
 	boolean result = false;
 	try {
-	    limitDeviceTool.remove("ID");
-	    result = limitDeviceTool.save();
+	    LimitDeviceTool temp = find(limitDeviceTool.getCOSTUNIT(), limitDeviceTool.getWORKPLACE(), limitDeviceTool.getTOOLID(), limitDeviceTool.getTYPE());
+	    if(temp == null){
+		limitDeviceTool.remove("ID");
+		result = limitDeviceTool.save();
+	    }else{
+		temp.setSTATE(limitDeviceTool.getSTATE());
+		temp.setCOUNT(limitDeviceTool.getCOUNT());
+		temp.setNOTE(limitDeviceTool.getNOTE());
+		result = temp.update();
+	    }
+	    
 	} catch (Exception e) {
 	    log.error("LimitDeviceTool Save Error", e);
 	}

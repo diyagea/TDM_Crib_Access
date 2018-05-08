@@ -3,10 +3,7 @@ package com.TCA.controller;
 import java.util.HashMap;
 
 import com.TCA.common.model.LimitTimeTool;
-import com.TCA.common.model.LimitUserTool;
 import com.TCA.service.LimitTimeToolService;
-import com.TCA.validator.LimitTimeToolValidator;
-import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -42,30 +39,12 @@ public class LimitTimeToolController extends Controller {
     }
 
     /**
-     * 准备添加
-     * /demo/limitTimeTool/add
-     */
-    public void add() {
-	render("limitTimeToolAdd.html");
-    }
-
-    /**
      * 保存
      * /demo/limitTimeTool/save
      */
     public void save() {
 	boolean result = srv.save(getModel(LimitTimeTool.class));
 	renderJson("isOk", result);
-    }
-
-    /**
-     * 准备更新
-     * /demo/limitTimeTool/edit
-     */
-    public void edit() {
-	LimitTimeTool limitTimeTool = srv.findById(getParaToInt("id"));
-	setAttr("limitTimeTool", limitTimeTool);
-	render("limitTimeToolEdit.html");
     }
 
     /**

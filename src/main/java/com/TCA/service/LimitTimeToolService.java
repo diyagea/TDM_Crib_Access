@@ -29,8 +29,16 @@ public class LimitTimeToolService {
     public boolean save(LimitTimeTool limitTimeTool) {
 	boolean result = false;
 	try {
-	    limitTimeTool.remove("ID");
-	    result = limitTimeTool.save();
+	    LimitTimeTool temp = find(limitTimeTool.getSTARTTIME(), limitTimeTool.getENDTIME(), limitTimeTool.getTOOLID(), limitTimeTool.getTYPE());
+	    if(temp == null){
+		limitTimeTool.remove("ID");
+		result = limitTimeTool.save();
+	    }else{
+		temp.setSTATE(limitTimeTool.getSTATE());
+		temp.setCOUNT(limitTimeTool.getCOUNT());
+		temp.setNOTE(limitTimeTool.getNOTE());
+		result = temp.update();
+	    }
 	} catch (Exception e) {
 	    log.error("LimitTimeTool Save Error", e);
 	}
@@ -59,8 +67,8 @@ public class LimitTimeToolService {
     /**
      * 查询
      */
-    public LimitTimeTool findById(int limitTimeToolId) {
-	return dao.findFirst("select * from TCA_LIMIT_TIME_TOOL where id=?", limitTimeToolId);
+    public LimitTimeTool find(String sTime, String eTime, String toolID, int toolType) {
+	return dao.findFirst("SELECT * FROM TCA_LIMIT_TIME_TOOL WHERE STARTTIME=? AND ENDTIME=? AND TOOLID=? AND TYPE=? ", sTime, eTime, toolID, toolType);
     }
     
     /**

@@ -38,50 +38,51 @@ public class IssueRecordService {
     
     public String doIssue(String uCode, String toolID, int toolType, int count, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo){
 	/*limit check*/
-	//1 check IssueUser State
+	//check IssueUser State
 	IssueUser u = userSrv.findByUCode(uCode);
 	if(u == null || u.getSTATE()==0){//不存在或禁用
 	    return "失败原因：用户不存在或已被禁用，禁止领取刀具！";
 	}
-	//2 check User-Tool limit
-	LimitUserTool lUser = lUserSrv.find(uCode, toolID, toolType);
-	if(lUser != null && lUser.getSTATE() == 1){//存在并启用
-	    if(lUser.getCOUNT() == 0){//限制数量为0
-		return "失败原因：该用户被禁止领取此刀具["+toolID+"]!";
-	    }else if(lUser.getCOUNT() > 0 && count > lUser.getCOUNT()){
-		return "失败原因：领取数量已超过最大限制数量[条件：用户限制，数量："+lUser.getCOUNT()+"]";
-	    }
-	}
-	//3 check Device-Tool limit
-	LimitDeviceTool lDevice = lDeviceSrv.find(costunitTo, workplaceTo, toolID, toolType);
-	if(lDevice != null && lDevice.getSTATE() == 1){//存在并启用
-	    if(lDevice.getCOUNT() == 0){//限制数量为0
-		return "失败原因：该设备被禁止领取此刀具["+toolID+"]";
-	    }else if(lDevice.getCOUNT() > 0 && count > lDevice.getCOUNT()){
-		return "失败原因：领取数量已超过最大限制数量[条件：设备限制，数量："+lDevice.getCOUNT()+"]";
-	    }
-	}
-	//4 check Time-Tool limit
-	String nowTime = DateKit.toStr(new Date(), "HH:mm:ss");
-	LimitTimeTool lTime = lTimeSrv.find(nowTime, toolID, toolType);
-	if(lTime != null && lTime.getSTATE() == 1){//存在并启用
-	    if(lTime.getCOUNT() == 0){//限制数量为0
-		return "失败原因：当前时间被禁止领取此刀具["+toolID+"]";
-	    }else if(lTime.getCOUNT() > 0 && count > lTime.getCOUNT()){
-		return "失败原因：领取数量已超过最大限制数量[条件：时间限制，数量："+lTime.getCOUNT()+"]";
-	    }
-	}
-	//add issue record / clear record state
 	//check issueType (issue out/return)
-	if(checkIssueType(uCode, toolID, toolType, costunitFrom, workplaceFrom, costunitTo, workplaceTo)){//领取
+	if(checkIssueType(uCode, toolID, toolType, costunitFrom, workplaceFrom, costunitTo, workplaceTo)){//issue out
+	    //check User-Tool limit
+	    LimitUserTool lUser = lUserSrv.find(uCode, toolID, toolType);
+	    if(lUser != null && lUser.getSTATE() == 1){//存在并启用
+		if(lUser.getCOUNT() == 0){//限制数量为0
+		    return "失败原因：该用户被禁止领取此刀具["+toolID+"]!";
+		}else if(lUser.getCOUNT() > 0 && count > lUser.getCOUNT()){
+		    return "失败原因：领取数量已超过最大限制数量[条件：用户限制，数量："+lUser.getCOUNT()+"]";
+		}
+	    }
+	    //check Device-Tool limit
+	    LimitDeviceTool lDevice = lDeviceSrv.find(costunitTo, workplaceTo, toolID, toolType);
+	    if(lDevice != null && lDevice.getSTATE() == 1){//存在并启用
+		if(lDevice.getCOUNT() == 0){//限制数量为0
+		    return "失败原因：该设备被禁止领取此刀具["+toolID+"]";
+		}else if(lDevice.getCOUNT() > 0 && count > lDevice.getCOUNT()){
+		    return "失败原因：领取数量已超过最大限制数量[条件：设备限制，数量："+lDevice.getCOUNT()+"]";
+		}
+	    }
+	    //check Time-Tool limit
+	    String nowTime = DateKit.toStr(new Date(), "HH:mm:ss");
+	    LimitTimeTool lTime = lTimeSrv.find(nowTime, toolID, toolType);
+	    if(lTime != null && lTime.getSTATE() == 1){//存在并启用
+		if(lTime.getCOUNT() == 0){//限制数量为0
+		    return "失败原因：当前时间被禁止领取此刀具["+toolID+"]";
+		}else if(lTime.getCOUNT() > 0 && count > lTime.getCOUNT()){
+		    return "失败原因：领取数量已超过最大限制数量[条件：时间限制，数量："+lTime.getCOUNT()+"]";
+		}
+	    }
 	    try {
+		//add new issue record
 		newRecord(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo);
 	    } catch (Exception e) {
 		log.error("刀具["+toolID+"]添加领取记录失败！", e);
 		return "失败原因：服务器内部错误，添加领取记录失败！";
 	    }
-	}else{//归还
+	}else{//return back
 	    try {
+		//clear issue record state and count
 		returnRecord(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo);
 	    } catch (Exception e) {
 		log.error("刀具["+toolID+"]更新返还领取记录失败！", e);

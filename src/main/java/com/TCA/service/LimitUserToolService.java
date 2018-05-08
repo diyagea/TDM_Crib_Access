@@ -29,8 +29,17 @@ public class LimitUserToolService {
     public boolean save(LimitUserTool limitUserTool) {
 	boolean result = false;
 	try {
-	    limitUserTool.remove("ID");
-	    result = limitUserTool.save();
+	    LimitUserTool temp = find(limitUserTool.getUSERCODE(), limitUserTool.getTOOLID(), limitUserTool.getTYPE());
+	    if(temp == null){ // not exist
+		limitUserTool.remove("ID");
+		result = limitUserTool.save();
+	    }else{// exist
+		temp.setSTATE(limitUserTool.getSTATE());
+		temp.setCOUNT(limitUserTool.getCOUNT());
+		temp.setNOTE(limitUserTool.getNOTE());
+		result = temp.update();
+	    }
+	    
 	} catch (Exception e) {
 	    log.error("LimitUserTool Save Error", e);
 	}

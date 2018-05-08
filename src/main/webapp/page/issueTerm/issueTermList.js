@@ -38,7 +38,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             	}else if(d.TIMETYPE==2){
             		title='天';
             	}else if(d.TIMETYPE==3){
-            		title='月';
+            		title='周';
             	}
             	return title;
             }},
