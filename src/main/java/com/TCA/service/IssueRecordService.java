@@ -36,7 +36,21 @@ public class IssueRecordService {
     static LimitDeviceToolService lDeviceSrv = LimitDeviceToolService.me;
     static LimitTimeToolService lTimeSrv = LimitTimeToolService.me;
     
-    public String doIssue(String uCode, String toolID, int toolType, int count, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo){
+    /**
+     * Do TDM issue method
+     * @param uCode
+     * @param toolID
+     * @param toolType 1=item, 2=assembly
+     * @param count
+     * @param costunitFrom
+     * @param workplaceFrom
+     * @param costunitTo
+     * @param workplaceTo
+     * @param fromType 1=crib, 2=machine, 3=maintenance
+     * @param toType 1=crib, 2=machine, 3=maintenance
+     * @return
+     */
+    public String doIssue(String uCode, String toolID, int toolType, int count, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo, int fromType, int toType){
 	/*limit check*/
 	//check IssueUser State
 	IssueUser u = userSrv.findByUCode(uCode);
@@ -44,14 +58,14 @@ public class IssueRecordService {
 	    return "失败原因：用户不存在或已被禁用，禁止领取刀具！";
 	}
 	//check issueType (issue out/return)
-	if(checkIssueType(uCode, toolID, toolType, costunitFrom, workplaceFrom, costunitTo, workplaceTo)){//issue out
+	if(checkIssueType(uCode, toolID, toolType, costunitFrom, workplaceFrom, costunitTo, workplaceTo, fromType, toType)){//issue out
 	    //check User-Tool limit
 	    LimitUserTool lUser = lUserSrv.find(uCode, toolID, toolType);
 	    if(lUser != null && lUser.getSTATE() == 1){//存在并启用
 		if(lUser.getCOUNT() == 0){//限制数量为0
 		    return "失败原因：该用户被禁止领取此刀具["+toolID+"]!";
 		}else if(lUser.getCOUNT() > 0 && count > lUser.getCOUNT()){
-		    return "失败原因：领取数量已超过最大限制数量[条件：用户限制，数量："+lUser.getCOUNT()+"]";
+		    return "失败原因：领取数量已超过最大限制数量[条件：用户-刀具限制，数量："+lUser.getCOUNT()+"]";
 		}
 	    }
 	    //check Device-Tool limit
@@ -60,7 +74,7 @@ public class IssueRecordService {
 		if(lDevice.getCOUNT() == 0){//限制数量为0
 		    return "失败原因：该设备被禁止领取此刀具["+toolID+"]";
 		}else if(lDevice.getCOUNT() > 0 && count > lDevice.getCOUNT()){
-		    return "失败原因：领取数量已超过最大限制数量[条件：设备限制，数量："+lDevice.getCOUNT()+"]";
+		    return "失败原因：领取数量已超过最大限制数量[条件：设备-刀具限制，数量："+lDevice.getCOUNT()+"]";
 		}
 	    }
 	    //check Time-Tool limit
@@ -70,7 +84,7 @@ public class IssueRecordService {
 		if(lTime.getCOUNT() == 0){//限制数量为0
 		    return "失败原因：当前时间被禁止领取此刀具["+toolID+"]";
 		}else if(lTime.getCOUNT() > 0 && count > lTime.getCOUNT()){
-		    return "失败原因：领取数量已超过最大限制数量[条件：时间限制，数量："+lTime.getCOUNT()+"]";
+		    return "失败原因：领取数量已超过最大限制数量[条件：时间-刀具限制，数量："+lTime.getCOUNT()+"]";
 		}
 	    }
 	    try {
@@ -94,16 +108,25 @@ public class IssueRecordService {
     
     /**
      * 判断领取类型
-     * @return true=new issue, false=return
+     * @return true=issue out, false=return
      */
-    private boolean checkIssueType(String uCode, String toolID, int toolType, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo){
+    private boolean checkIssueType(String uCode, String toolID, int toolType, String costunitFrom, String workplaceFrom, String costunitTo, String workplaceTo, int fromType, int toType){
+	boolean result = false;
+	
 	//check row count 
 	Record r = Db.findFirst("SELECT COUNT(1) AS DATACOUNT FROM TCA_ISSUE_RECORD WHERE USERCODE=? AND TOOLID=? AND TYPE=? AND COSTUNITFROM=? AND WORKPLACEFROM=? AND COSTUNITTO=? AND WORKPLACETO=? AND STATE=0 ", uCode, toolID, toolType, costunitTo, workplaceTo, costunitFrom, workplaceFrom);
-	boolean result = false;
 	int rowCount = r.getInt("DATACOUNT");
 	if(rowCount == 0){//no row = new issue out 
 	    result = true;
 	}	
+	
+	//check CostCenter type
+	if(fromType == 1 && toType == 2){
+	    result = true;
+	}else if(fromType == 2 && toType == 1){
+	    result = false;
+	}
+	
 	return result;
     }
     
@@ -127,7 +150,7 @@ public class IssueRecordService {
 	
 	//计算时间期限毫秒
 	long timeTerm = 0;
-	if(issueTerm != null){
+	if(issueTerm != null && issueTerm.getSTATE() == 1){
 	    int timeVal = issueTerm.getTIMEVAL();
 	    int timeType = issueTerm.getTIMETYPE();
 	    switch(timeType){

@@ -75,7 +75,7 @@ public class LimitTimeToolService {
      * 查询
      */
     public LimitTimeTool find(String time, String toolID, int toolType) {
-	return dao.findFirst("SELECT * FROM TCA_LIMIT_TIME_TOOL WHERE STARTTIME>=? AND ENDTIME<=? AND TOOLID=? AND TYPE=? ", time, time, toolID, toolType);
+	return dao.findFirst("SELECT * FROM TCA_LIMIT_TIME_TOOL WHERE STARTTIME<=? AND ENDTIME>=? AND TOOLID=? AND TYPE=? ", time, time, toolID, toolType);
     }
 
     /**

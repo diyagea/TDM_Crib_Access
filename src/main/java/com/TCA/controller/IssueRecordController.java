@@ -37,8 +37,10 @@ public class IssueRecordController extends Controller {
 	String toolID = getPara(5);
 	int toolType = getParaToInt(6);
 	int count = getParaToInt(7);
+	int fromType = getParaToInt(8);
+	int toType = getParaToInt(9);
 
-	renderJson(srv.doIssue(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo));
+	renderJson(srv.doIssue(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo, fromType, toType));
     }
     
     /**
