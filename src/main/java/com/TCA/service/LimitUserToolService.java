@@ -20,7 +20,14 @@ public class LimitUserToolService {
      * 列表-分页
      */
     public Page<LimitUserTool> paginate(int pageNumber, int pageSize) {
-	return dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_LIMIT_USER_TOOL");
+	
+	Page<LimitUserTool> resultPage = dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_LIMIT_USER_TOOL");
+	for(LimitUserTool l : resultPage.getList()){
+	    //加载员工名称
+	    l.getUSERNAME();
+	}
+	
+	return resultPage;
     }
     
     /**

@@ -20,6 +20,7 @@ layui.use(['form','layer','table','laytpl'],function(){
             //{type: "checkbox", fixed:"left", width:50},
             {type:'numbers'},
             {field: 'USERCODE', title: '员工编号', width:100, align:"center"},
+            {field: 'USERNAME', title: '员工姓名', width:100, align:"center"},
             {field: 'COSTUNITFROM', title: '（从）成本中心', minWidth:150, align:"center", templet:function(d){
             	return d.COSTUNITFROM+" - "+d.WORKPLACEFROM;
             }},

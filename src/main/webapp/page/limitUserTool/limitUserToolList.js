@@ -18,7 +18,8 @@ layui.use(['form','layer','table','laytpl'],function(){
         cols : [[
             //{type: "checkbox", fixed:"left", width:50},
             {type:'numbers'},
-            {field: 'USERCODE', title: '用户', width:150, align:"center"},
+            {field: 'USERCODE', title: '用户编号', width:150, align:"center"},
+            {field: 'USERNAME', title: '用户姓名', width:150, align:"center"},
             {field: 'TOOLID', title: '刀具ID', width:150, align:"center"},
             {field: 'TYPE', title: '刀具类别', width:120, align:"center", templet:function(d){
             	var title='组装刀具';

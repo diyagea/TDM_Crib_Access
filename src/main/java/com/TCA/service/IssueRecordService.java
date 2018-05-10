@@ -309,7 +309,12 @@ public class IssueRecordService {
 	    condStr = "";
 	}
 	
-	return dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_ISSUE_RECORD " + condStr + " ORDER BY ISSUETIME DESC");
+	Page<IssueRecord> resultPage = dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_ISSUE_RECORD " + condStr + " ORDER BY ISSUETIME DESC");
+	for(IssueRecord r : resultPage.getList()){
+	    //加载员工名称
+	    r.getUSERNAME();
+	}
+	return resultPage;
     }
 
     /**
