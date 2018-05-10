@@ -20,10 +20,6 @@ public class IssueTermController extends Controller {
 
     static IssueTermService srv = IssueTermService.me;
 
-    public void index(){
-	this.list();
-    }
-    
     /**
      * 列表
      */
@@ -31,8 +27,6 @@ public class IssueTermController extends Controller {
     public void list() {
 	int page = getParaToInt("page");
 	int limit = getParaToInt("limit");
-	String key = getPara("key");
-	System.out.println(key);
 	Page p = srv.paginate(page, limit);
 	HashMap m = new HashMap();
 	m.put("code", 0);

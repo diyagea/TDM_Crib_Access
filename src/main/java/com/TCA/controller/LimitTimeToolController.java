@@ -26,8 +26,6 @@ public class LimitTimeToolController extends Controller {
     public void list() {
 	int page = getParaToInt("page");
 	int limit = getParaToInt("limit");
-	String key = getPara("key");
-	System.out.println(key);
 	Page p = srv.paginate(page, limit);
 	HashMap m = new HashMap();
 	m.put("code", 0);

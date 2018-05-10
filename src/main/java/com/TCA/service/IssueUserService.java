@@ -17,10 +17,6 @@ public class IssueUserService {
     public static final IssueUserService me = new IssueUserService();
     private final IssueUser dao = new IssueUser().dao();
 
-    public List<IssueUser> listWithState(int state){
-	return IssueUser.dao.find("SELECT * FROM TCA_ISSUE_USER WHERE STATE = ?", state);
-    }
-    
     /**
      * 列表-分页
      */
@@ -61,6 +57,15 @@ public class IssueUserService {
     }
 
     /**
+     * query list by state
+     * @param state
+     * @return
+     */
+    public List<IssueUser> listWithState(int state){
+	return IssueUser.dao.find("SELECT * FROM TCA_ISSUE_USER WHERE STATE = ?", state);
+    }
+    
+    /**
      * 查询
      */
     public IssueUser findByUCode(String uSERCODE) {
@@ -71,7 +76,6 @@ public class IssueUserService {
      * 删除
      */
     public void delete(String issueUserId) {
-	// Db.update("delete from TCA_ISSUE_USER where id=?", issueUserId);
 	dao.deleteById(issueUserId);
     }
 

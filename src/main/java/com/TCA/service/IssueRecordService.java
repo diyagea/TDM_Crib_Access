@@ -259,13 +259,6 @@ public class IssueRecordService {
 	
 	return returnData;
     }
-    
-    /**
-     * 列表-分页
-     */
-    public Page<IssueRecord> paginate(int pageNumber, int pageSize) {
-	return dao.paginate(pageNumber, pageSize, "SELECT * ", "FROM TCA_ISSUE_RECORD");
-    }
 
     /**
      * 列表-分页
@@ -318,14 +311,7 @@ public class IssueRecordService {
     }
 
     /**
-     * 查询
-     */
-    public IssueRecord findById(int issueRecordId) {
-	return dao.findFirst("select * from TCA_ISSUE_RECORD where id=?", issueRecordId);
-    }
-    
-    /**
-     * 查询列表
+     * 查询列表（定时器使用）
      */
     public List<IssueRecord> findListByState(int state) {
 	return dao.find("SELECT * FROM TCA_ISSUE_RECORD WHERE STATE=? ", state);

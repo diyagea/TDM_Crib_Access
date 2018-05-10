@@ -29,6 +29,7 @@ public class LimitDeviceToolService {
     public boolean save(LimitDeviceTool limitDeviceTool) {
 	boolean result = false;
 	try {
+	    //判断是否重复添加，若重复，更新已有数据，不重复，新增数据
 	    LimitDeviceTool temp = find(limitDeviceTool.getCOSTUNIT(), limitDeviceTool.getWORKPLACE(), limitDeviceTool.getTOOLID(), limitDeviceTool.getTYPE());
 	    if(temp == null){
 		limitDeviceTool.remove("ID");
@@ -69,7 +70,7 @@ public class LimitDeviceToolService {
      * 查询
      */
     public LimitDeviceTool findById(int ID) {
-	return dao.findFirst("select * from TCA_LIMIT_DEVICE_TOOL where ID=?", ID);
+	return dao.findFirst("SELECT * FROM TCA_LIMIT_DEVICE_TOOL WHERE ID=?", ID);
     }
     
     /**
@@ -83,7 +84,7 @@ public class LimitDeviceToolService {
      * 删除
      */
     public boolean delete(int ID) {
-	int result = Db.update("delete from TCA_LIMIT_DEVICE_TOOL where ID=?", ID);
+	int result = Db.update("DELETE FROM TCA_LIMIT_DEVICE_TOOL WHERE ID=?", ID);
 	
 	if(result>0){
 	    return true;

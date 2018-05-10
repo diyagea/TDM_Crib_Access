@@ -4,10 +4,7 @@ import java.util.HashMap;
 
 import com.TCA.common.model.IssueUser;
 import com.TCA.service.IssueUserService;
-import com.TCA.validator.IssueUserValidator;
-import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
-import com.jfinal.kit.JsonKit;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -29,8 +26,6 @@ public class IssueUserController extends Controller {
     public void list() {
 	int page = getParaToInt("page");
 	int limit = getParaToInt("limit");
-	String key = getPara("key");
-	System.out.println(key);
 	Page p = srv.paginate(page, limit);
 	HashMap m = new HashMap();
 	m.put("code", 0);
@@ -40,17 +35,6 @@ public class IssueUserController extends Controller {
 
 	renderJson(m);
 
-	// setAttr("page", srv.paginate(getParaToInt("p", 1), 40));
-
-	// render("issueUserList.html");
-    }
-
-    /**
-     * 准备添加
-     * /demo/issueUser/add
-     */
-    public void add() {
-	render("issueUserAdd.html");
     }
 
     /**
@@ -77,16 +61,6 @@ public class IssueUserController extends Controller {
     public void updateState() {
 	boolean result = srv.updateState(getPara("USERCODE"), getParaToBoolean("SWITCH"));
 	renderJson("isOk", result);
-    }
-
-    /**
-     * 查看
-     * /demo/issueUser/view
-     */
-    public void view() {
-	IssueUser issueUser = srv.findByUCode(getPara("USERCODE"));
-	setAttr("issueUser", issueUser);
-	render("issueUserView.html");
     }
 
     /**

@@ -4,8 +4,6 @@ import java.util.HashMap;
 
 import com.TCA.common.model.LimitDeviceTool;
 import com.TCA.service.LimitDeviceToolService;
-import com.TCA.validator.LimitDeviceToolValidator;
-import com.jfinal.aop.Before;
 import com.jfinal.core.Controller;
 import com.jfinal.plugin.activerecord.Page;
 
@@ -28,8 +26,6 @@ public class LimitDeviceToolController extends Controller {
     public void list() {
 	int page = getParaToInt("page");
 	int limit = getParaToInt("limit");
-	String key = getPara("key");
-	System.out.println(key);
 	Page p = srv.paginate(page, limit);
 	HashMap m = new HashMap();
 	m.put("code", 0);
@@ -41,30 +37,12 @@ public class LimitDeviceToolController extends Controller {
     }
 
     /**
-     * 准备添加
-     * /demo/limitDeviceTool/add
-     */
-    public void add() {
-	render("limitDeviceToolAdd.html");
-    }
-
-    /**
      * 保存
      * /demo/limitDeviceTool/save
      */
     public void save() {
 	boolean result = srv.save(getModel(LimitDeviceTool.class));
 	renderJson("isOk", result);
-    }
-
-    /**
-     * 准备更新
-     * /demo/limitDeviceTool/edit
-     */
-    public void edit() {
-	LimitDeviceTool limitDeviceTool = srv.findById(getParaToInt("id"));
-	setAttr("limitDeviceTool", limitDeviceTool);
-	render("limitDeviceToolEdit.html");
     }
 
     /**

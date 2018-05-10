@@ -59,14 +59,14 @@ public class IssueTermService {
      * 查询
      */
     public IssueTerm findByToolID(String toolID) {
-	return dao.findFirst("select * from TCA_ISSUE_TERM where TOOLID=?", toolID);
+	return dao.findFirst("SELECT * FROM TCA_ISSUE_TERM WHERE TOOLID=?", toolID);
     }
 
     /**
      * 删除
      */
     public boolean delete(String issueTermId) {
-	int result = Db.update("delete from TCA_ISSUE_TERM where TOOLID=?", issueTermId);
+	int result = Db.update("DELETE FROM TCA_ISSUE_TERM WHERE TOOLID=?", issueTermId);
 	if(result > 0){
 	    return true;
 	}else {

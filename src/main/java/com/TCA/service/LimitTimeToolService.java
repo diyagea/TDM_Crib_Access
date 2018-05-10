@@ -29,6 +29,7 @@ public class LimitTimeToolService {
     public boolean save(LimitTimeTool limitTimeTool) {
 	boolean result = false;
 	try {
+	    //判断是否重复添加，若重复，更新已有数据，不重复，新增数据
 	    LimitTimeTool temp = find(limitTimeTool.getSTARTTIME(), limitTimeTool.getENDTIME(), limitTimeTool.getTOOLID(), limitTimeTool.getTYPE());
 	    if(temp == null){
 		limitTimeTool.remove("ID");
@@ -83,7 +84,7 @@ public class LimitTimeToolService {
      */
     public boolean delete(int ID) {
 
-	int result = Db.update("delete from TCA_LIMIT_TIME_TOOL where id=?", ID);
+	int result = Db.update("DELETE FROM TCA_LIMIT_TIME_TOOL WHERE ID=?", ID);
 	if (result > 0) {
 	    return true;
 	} else {

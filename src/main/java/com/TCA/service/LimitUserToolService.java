@@ -76,7 +76,7 @@ public class LimitUserToolService {
      * 查询
      */
     public LimitUserTool findById(int ID) {
-	return dao.findFirst("select * from TCA_LIMIT_USER_TOOL where ID=?", ID);
+	return dao.findFirst("SELECT * FROM TCA_LIMIT_USER_TOOL WHERE ID=?", ID);
     }
     
     /**
@@ -90,7 +90,7 @@ public class LimitUserToolService {
      * 删除
      */
     public boolean delete(int ID) {
-	int result = Db.update("delete from TCA_LIMIT_USER_TOOL where ID=?", ID);
+	int result = Db.update("DELETE FROM TCA_LIMIT_USER_TOOL WHERE ID=?", ID);
 	if(result>0){
 	    return true;
 	}else{

@@ -34,21 +34,8 @@ public class LimitUserToolController extends Controller {
 	m.put("msg", "");
 	m.put("count", p.getTotalRow());
 	m.put("data", p.getList());
-	
-	//TODO show user name in LimitUserTool table
-	/*for(Object o : p.getList()){
-	    
-	}*/
 
 	renderJson(m);
-    }
-
-    /**
-     * 准备添加
-     * /demo/limitUserTool/add
-     */
-    public void addBefore() {
-	renderJson("userList", userSrv.listWithState(1));
     }
 
     /**
@@ -58,16 +45,6 @@ public class LimitUserToolController extends Controller {
     public void save() {
 	boolean result = srv.save(getModel(LimitUserTool.class));
 	renderJson("isOk", result);
-    }
-
-    /**
-     * 准备更新
-     * /demo/limitUserTool/edit
-     */
-    public void edit() {
-	LimitUserTool limitUserTool = srv.findById(getParaToInt("id"));
-	setAttr("limitUserTool", limitUserTool);
-	render("limitUserToolEdit.html");
     }
 
     /**
