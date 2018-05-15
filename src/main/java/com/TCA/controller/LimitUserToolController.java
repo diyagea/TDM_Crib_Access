@@ -37,6 +37,14 @@ public class LimitUserToolController extends Controller {
 
 	renderJson(m);
     }
+    
+    /**
+     * 准备添加
+     * /demo/limitUserTool/add
+     */
+    public void addBefore() {
+	renderJson("userList", userSrv.listWithState(1));
+    }
 
     /**
      * 保存
