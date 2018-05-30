@@ -1,9 +1,13 @@
 package com.TCA.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import com.TCA.service.IssueRecordService;
+import com.TCA.util.JbarcodeUtil;
 import com.jfinal.core.Controller;
+import com.jfinal.ext.kit.DateKit;
+import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.Page;
 
 /**
@@ -41,6 +45,14 @@ public class IssueRecordController extends Controller {
 	int toType = getParaToInt(9);
 
 	renderJson(srv.doIssue(uCode, toolID, toolType, count, costunitFrom, workplaceFrom, costunitTo, workplaceTo, fromType, toType));
+    }
+    
+    public void doPrint(){
+	String itemID = getPara(0);
+	String issueFlag = getPara(1);
+	String datetime = DateKit.toStr(new Date(), "yyyyMMddHHmmss");
+	JbarcodeUtil.createBarcode(itemID, PropKit.get("barcodePath") + issueFlag + "-" + datetime + "." + PropKit.get("imgType"), PropKit.get("barcodeTitle"));
+	renderJson();
     }
     
     /**
